@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Feedback app</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="./" data-go="list">AI order processing feedback</a>
+    <nav id="nav" hidden>
+      <a href="?p=list" data-go="list">All entries</a>
+      <a href="?p=new" data-go="new" id="navNew">＋ New entry</a>
+      <a href="?p=help" data-go="help">Help</a>
+      <a href="?p=links" data-go="links" id="navLinks" hidden>Personal links</a>
+      <a href="#" id="navSheet" target="_blank" rel="noopener" hidden>Open the sheet ↗</a>
+    </nav>
+    <span id="who" class="who"></span>
+  </div>
+</header>
+<main class="wrap" id="app"><p class="loading">Loading…</p></main>
+<div id="toast" class="toast" hidden></div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
