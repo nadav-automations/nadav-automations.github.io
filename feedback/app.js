@@ -295,7 +295,7 @@
       thumbs.appendChild(item.el); items.push(item); DIRTY = true;
       $('input', item.el).oninput = ev => { item.caption = ev.target.value; };
       $('.x', item.el).onclick = () => { items.splice(items.indexOf(item), 1); item.el.remove(); };
-      item.ready = shrink(f).then(url => { item.data = url; $('img', item.el).src = url; })
+      item.ready = shrink(f).then(async url => { item.data = url; $('img', item.el).src = url; item.thumb = await thumbOf(url); })
         .catch(() => { $('.state', item.el).textContent = 'Couldn\'t read this image.'; });
     });
     document.onpaste = ev => {
@@ -320,7 +320,7 @@
             await item.ready;
             if (!item.data) throw new Error('unreadable');
             state.textContent = 'Uploading…';
-            await call('shot', { id: entryId, image: item.data, caption: item.caption });
+            await call('shot', { id: entryId, image: item.data, caption: item.caption, thumb: item.thumb || '' });
             state.textContent = '✓ Added';
           } catch (err) { failed++; state.textContent = 'Didn\'t upload: ' + err.message; }
         }
@@ -348,6 +348,23 @@
         img.src = url;
       };
       r.readAsDataURL(file);
+    });
+  }
+
+  // Small copy for the sheet's Screenshots tab (max 320 pixels)
+  function thumbOf(url) {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onerror = () => resolve('');
+      img.onload = () => {
+        const scale = Math.min(1, 320 / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * scale)); c.height = Math.max(1, Math.round(img.height * scale));
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+        g.drawImage(img, 0, 0, c.width, c.height);
+        resolve(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.src = url;
     });
   }
 
