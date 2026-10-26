@@ -94,9 +94,9 @@
   }
 
   function paintTop() {
-    const nav = $('#nav'), who = $('#who');
-    if (!KEY || !BOOT) { nav.hidden = true; who.innerHTML = ''; return; }
-    nav.hidden = false;
+    const nav = $('#nav'), who = $('#who'), side = $('#side');
+    if (!KEY || !BOOT) { nav.hidden = true; if (side) side.hidden = true; who.innerHTML = ''; return; }
+    nav.hidden = false; if (side) side.hidden = false;
     if ($('#navNew')) $('#navNew').hidden = !canWrite();
     if ($('#navLinks')) $('#navLinks').hidden = me().role !== 'owner';
     const pop = $('#navPop');
@@ -108,7 +108,7 @@
     };
     const sheet = $('#navSheet');
     if (sheet) { sheet.hidden = !BOOT.sheetUrl; if (BOOT.sheetUrl) sheet.href = BOOT.sheetUrl; }
-    who.innerHTML = `${esc(me().name)}${me().role === 'viewer' ? ' (view only)' : ''} · <a href="#" id="forget" style="color:#fff;">Forget me</a>`;
+    who.innerHTML = `${esc(me().name)}${me().role === 'viewer' ? ' (view only)' : ''} · <a href="#" id="forget">Forget me</a>`;
     $('#forget').onclick = e => {
       e.preventDefault();
       if (confirm('Forget your personal link on this browser? You\'ll need the link from your email to get back in.')) { forget(); go('list'); }

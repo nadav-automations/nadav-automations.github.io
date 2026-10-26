@@ -6,26 +6,28 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <title>Feedback app</title>
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <header class="top">
   <div class="wrap bar">
-    <a class="brand" href="./" data-go="list">AI order processing feedback</a>
+    <a class="brand" href="./" data-go="list">AI order processing <span>feedback</span></a>
     <nav id="nav" hidden>
       <a href="?p=list" data-go="list">All entries</a>
       <a href="?p=new" data-go="new" id="navNew">＋ New entry</a>
       <a href="?p=help" data-go="help">Help</a>
       <a href="?p=links" data-go="links" id="navLinks" hidden>Personal links</a>
-      <a href="#" id="navSheet" target="_blank" rel="noopener" hidden>Open the sheet ↗</a>
-      <a href="#" id="navPop" title="Open the app in a small window you can keep beside the sheet">⧉ Pop out</a>
     </nav>
-    <span id="who" class="who"></span>
+    <div class="side" id="side" hidden>
+      <a href="#" class="chipbtn" id="navSheet" target="_blank" rel="noopener" hidden title="Open the Google Sheet">Sheet ↗</a>
+      <a href="#" class="chipbtn" id="navPop" title="Open the app in a small window you can keep beside the sheet">⧉ Pop out</a>
+      <span id="who" class="who"></span>
+    </div>
   </div>
 </header>
 <main class="wrap" id="app"><p class="loading">Loading…</p></main>
 <div id="toast" class="toast" hidden></div>
-<script src="config.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="config.js?v=4"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>
