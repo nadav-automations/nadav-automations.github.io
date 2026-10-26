@@ -99,6 +99,13 @@
     nav.hidden = false;
     $('#navNew').hidden = !canWrite();
     $('#navLinks').hidden = me().role !== 'owner';
+    const pop = $('#navPop');
+    pop.hidden = window.name === 'feedbackPopout';
+    pop.onclick = e => {
+      e.preventDefault();
+      const w = window.open(location.href, 'feedbackPopout', 'popup,width=560,height=820');
+      if (w) w.focus(); else toast('Your browser blocked the pop-out window – allow pop-ups for this site and try again.', 6000);
+    };
     const sheet = $('#navSheet');
     sheet.hidden = !BOOT.sheetUrl; if (BOOT.sheetUrl) sheet.href = BOOT.sheetUrl;
     who.innerHTML = `${esc(me().name)}${me().role === 'viewer' ? ' (view only)' : ''} · <a href="#" id="forget" style="color:#fff;">Forget me</a>`;
@@ -199,7 +206,7 @@
           <h3>${link('view', e.id, esc(e.headline || 'No headline'))}</h3>
           <div class="meta">${chip(e.type)} ${chip(e.name)} <span>${esc(e.date)}</span>
             ${e.orders && e.orders.length ? `<span>Order ${orderLinks(e.orders)}</span>` : ''}
-            ${e.shots ? `<span>📷 ${e.shots}</span>` : ''}
+            ${e.shots ? `<span>${e.shots} screenshot${e.shots === 1 ? '' : 's'}</span>` : ''}
             <span>${e.fedBack ? '✓ Sent' : 'Not yet sent'}</span></div>
         </div>
         <div class="acts">
