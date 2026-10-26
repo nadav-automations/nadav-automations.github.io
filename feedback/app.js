@@ -20,6 +20,17 @@
   const POPOUT = window.name === 'feedbackPopout' || /[?&]pop=1/.test(location.search);
   if (POPOUT) { window.name = 'feedbackPopout'; document.body.classList.add('compact'); }
 
+  // Opens a page of the app in a small window in the middle of the screen
+  function popup(path) {
+    const w = 560, h = 460;
+    const left = Math.round((window.screenLeft || 0) + ((window.outerWidth || screen.availWidth) - w) / 2);
+    const top = Math.round((window.screenTop || 0) + ((window.outerHeight || screen.availHeight) - h) / 2);
+    const win = window.open(path, 'feedbackPopout', `popup,width=${w},height=${h},left=${left},top=${top}`);
+    if (win) win.focus();
+    else toast('Your browser blocked the small window – click the icon at the right of the address bar and allow pop-ups for this site.', 8000);
+    return win;
+  }
+
   // ---- Personal key: arrives once as #k=…, then lives in this browser only
   let KEY = store.get('fbKey') || '';
   const fromHash = /(?:^#|&)k=([a-f0-9]{40})/.exec(location.hash);
@@ -103,12 +114,18 @@
     nav.hidden = false; if (side) side.hidden = false;
     if ($('#navNew')) $('#navNew').hidden = !canWrite();
     if ($('#navLinks')) $('#navLinks').hidden = me().role !== 'owner';
+    // The top bar's "＋ New entry" opens the form in a small window too (in place when already in one)
+    const navNew = $('#navNew');
+    if (navNew) navNew.onclick = e => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || POPOUT) return;
+      e.preventDefault(); e.stopPropagation();
+      popup('./?p=new&pop=1');
+    };
     const pop = $('#navPop');
     if (pop) pop.hidden = window.name === 'feedbackPopout';
     if (pop) pop.onclick = e => {
       e.preventDefault();
-      const w = window.open(location.href, 'feedbackPopout', 'popup,width=560,height=820');
-      if (w) w.focus(); else toast('Your browser blocked the pop-out window – allow pop-ups for this site and try again.', 6000);
+      popup(location.pathname + location.search + (location.search ? '&' : '?') + 'pop=1');
     };
     const sheet = $('#navSheet');
     if (sheet) { sheet.hidden = !BOOT.sheetUrl; if (BOOT.sheetUrl) sheet.href = BOOT.sheetUrl; }
@@ -188,11 +205,17 @@
             .map(([k, t]) => `<button class="${FILTER.show === k ? 'on' : ''}" data-f="${k}">${t}</button>`).join('')}
         </div>
         <input type="search" id="q" placeholder="Search headlines, descriptions, order numbers…" value="${esc(FILTER.q)}">
-        ${viewer ? '' : link('new', 0, '＋ New entry', 'btn')}
+        ${viewer ? '' : `<a href="?p=new" class="btn" id="listNew" title="Opens the form in a small window">＋ New entry</a>`}
       </div>
       <div id="list"></div>`);
     $$('.filters button').forEach(b => b.onclick = () => { FILTER.show = b.dataset.f; pageList(paint); });
     $('#q').oninput = () => { FILTER.q = $('#q').value; drawList(); };
+    // In a normal tab this opens the form in a small window; inside the small window it just opens the form
+    if ($('#listNew')) $('#listNew').onclick = e => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+      e.preventDefault();
+      if (POPOUT) go('new'); else popup('./?p=new&pop=1');
+    };
     drawList();
   }
   function drawList() {
@@ -225,19 +248,24 @@
   //      and this tab turns into the sheet, scrolled to the row the new entry will go in
   function pageLaunch(paint) {
     if (!canWrite()) throw new Error('Your link is view-only, so it can\'t add entries.');
+    const choice = store.get('fbNewChoice');
+    if (choice === 'here') { history.replaceState(null, '', '?p=new&remembered=1'); return pageForm(paint, null); }
     document.title = 'New entry';
     paint(`<div class="card launch">
         <h1 style="margin-top:0;">New entry</h1>
-        <p>The form opens in a small window. This tab then switches to the sheet, at the row your entry will go in.</p>
+        <p>The form opens in a small window, and this tab switches to the sheet at the row your entry will go in.</p>
         <button type="button" id="launch" class="big">＋ Open the New entry form</button>
-        <p class="muted" style="margin-top:14px;">${link('new', 0, 'Or fill it in here instead')}</p>
+        <p style="margin-top:14px;"><button type="button" class="light" id="here">Fill it in here instead</button></p>
+        <label class="muted" style="display:inline-flex;gap:6px;align-items:center;margin-top:6px;"><input type="checkbox" id="remember"${choice ? ' checked' : ''}> Remember my choice on this computer</label>
+        ${choice === 'popup' ? '<p class="muted" style="font-size:.8rem;">Browsers only open a small window after a click, so this button is always needed.</p>' : ''}
       </div>`);
+    const keep = v => { if ($('#remember').checked) store.set('fbNewChoice', v); else store.del('fbNewChoice'); };
     $('#launch').onclick = () => {
-      const w = window.open('./?p=new&pop=1', 'feedbackPopout', 'popup,width=560,height=860');
-      if (!w) { toast('Your browser blocked the small window – allow pop-ups for this site, or use the link below.', 7000); return; }
-      w.focus();
+      keep('popup');
+      if (!popup('./?p=new&pop=1')) return;
       if (BOOT.sheetUrl) location.href = `${BOOT.sheetUrl}#gid=${BOOT.sheetGid || 0}&range=A${BOOT.nextRow || 2}`;
     };
+    $('#here').onclick = () => { keep('here'); go('new', 0, true); };
   }
 
   // ---- New entry / Edit entry
@@ -252,7 +280,9 @@
     const picker = (key, list) => `<div class="pick" data-key="${key}">${list.map(x =>
       `<button type="button" data-v="${esc(x)}" class="${v[key] === x ? 'on' : ''}" style="background:${esc(colour(x))}">${esc(x)}</button>`).join('')}</div>`;
     document.title = e ? `Edit ${pad(e.id)}` : 'New entry';
+    const remembered = !e && /remembered=1/.test(location.search);
     paint(`<h1>${e ? `Edit entry ${pad(e.id)}` : 'New entry'}</h1>
+      ${remembered ? '<p class="muted" style="margin-top:-6px;">Opened here because you asked this computer to remember. <a href="#" id="forgetChoice">Ask me again next time</a></p>' : ''}
       <div class="card">
         <label class="f">Name</label>
         ${o.names.length > 1 && !e ? `<select id="name"><option value="">Choose name</option>${o.names.map(n => `<option${n === v.name ? ' selected' : ''}>${esc(n)}</option>`).join('')}</select>`
@@ -276,6 +306,7 @@
         ${e && e.fedBack ? '<p class="muted" style="margin-top:12px;">This entry has already been sent to the developer. Saving a change unticks Fed Back so it\'s sent again, marked UPDATED.</p>' : ''}
       </div>`);
     const shots = wireShots();
+    if ($('#forgetChoice')) $('#forgetChoice').onclick = ev => { ev.preventDefault(); store.del('fbNewChoice'); ev.target.parentNode.textContent = 'Done – next time you\'ll be asked again.'; };
     $$('.pick').forEach(p => p.onclick = ev => {
       const b = ev.target.closest('button'); if (!b) return;
       v[p.dataset.key] = b.dataset.v;
