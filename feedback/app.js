@@ -16,6 +16,10 @@
   const pad = n => String(n).padStart(3, '0');
   const bold = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 
+  // Pop-out window (or ?pop=1): slim one-line header
+  const POPOUT = window.name === 'feedbackPopout' || /[?&]pop=1/.test(location.search);
+  if (POPOUT) { window.name = 'feedbackPopout'; document.body.classList.add('compact'); }
+
   // ---- Personal key: arrives once as #k=…, then lives in this browser only
   let KEY = store.get('fbKey') || '';
   const fromHash = /(?:^#|&)k=([a-f0-9]{40})/.exec(location.hash);
@@ -127,6 +131,7 @@
       if (!BOOT || (p === 'edit' && !FRESH)) { paint('<p class="loading">Loading…</p>'); await load(); }
       else if (!FRESH) load().then(() => { if (n === RENDER && !DIRTY && ['list', 'view'].includes(route().p)) render(); }).catch(err => { if (err.badKey) pageKey(paint, err.message); });
       paintTop();
+      if (p === 'go') return pageLaunch(paint);
       if (p === 'new') return pageForm(paint, null);
       if (p === 'edit') return pageForm(paint, id);
       if (p === 'shot') return pageShot(paint, id);
@@ -214,6 +219,25 @@
           ${canEdit(e) ? link('edit', e.id, '✎ Edit', 'btn light small') + link('shot', e.id, '＋ Screenshot', 'btn light small') : ''}
         </div>
       </div>`).join('') : '<p class="muted">No entries match.</p>';
+  }
+
+  // ---- From the sheet's "＋ New entry" link: one click opens the form as a small window,
+  //      and this tab turns into the sheet, scrolled to the row the new entry will go in
+  function pageLaunch(paint) {
+    if (!canWrite()) throw new Error('Your link is view-only, so it can\'t add entries.');
+    document.title = 'New entry';
+    paint(`<div class="card launch">
+        <h1 style="margin-top:0;">New entry</h1>
+        <p>The form opens in a small window. This tab then switches to the sheet, at the row your entry will go in.</p>
+        <button type="button" id="launch" class="big">＋ Open the New entry form</button>
+        <p class="muted" style="margin-top:14px;">${link('new', 0, 'Or fill it in here instead')}</p>
+      </div>`);
+    $('#launch').onclick = () => {
+      const w = window.open('./?p=new&pop=1', 'feedbackPopout', 'popup,width=560,height=860');
+      if (!w) { toast('Your browser blocked the small window – allow pop-ups for this site, or use the link below.', 7000); return; }
+      w.focus();
+      if (BOOT.sheetUrl) location.href = `${BOOT.sheetUrl}#gid=${BOOT.sheetGid || 0}&range=A${BOOT.nextRow || 2}`;
+    };
   }
 
   // ---- New entry / Edit entry
