@@ -15,6 +15,12 @@
   store.del('hubKey');
   if (location.hash) history.replaceState(null, '', location.pathname);
   let SESSION = store.get('hubSession') || '';
+  const DEVICE = (() => {
+    const u = navigator.userAgent;
+    const kind = /iPad|Tablet/i.test(u) ? 'Tablet' : /Mobi|iPhone|Android/i.test(u) ? 'Phone' : 'Computer';
+    const b = /Edg\//.test(u) ? 'Edge' : /OPR\//.test(u) ? 'Opera' : /Firefox\//.test(u) ? 'Firefox' : /Chrome\//.test(u) ? 'Chrome' : /Safari\//.test(u) ? 'Safari' : 'other browser';
+    return `${kind} (${b})`;
+  })();
 
   async function call(params) {
     if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(API)) throw new Error('The hub address is missing from admin/config.js.');
@@ -41,8 +47,10 @@
       e.preventDefault();
       $('#go').disabled = true; $('#st').textContent = 'Signing in…';
       try {
-        const r = await call({ a: 'login', user: $('#user').value, pass: $('#pass').value });
-        SESSION = r.session; store.set('hubSession', SESSION); load();
+        const r = await call({ a: 'login', user: $('#user').value, pass: $('#pass').value, device: store.get('hubDevice') || '', dv: DEVICE });
+        SESSION = r.session; store.set('hubSession', SESSION);
+        if (r.device) store.set('hubDevice', r.device);
+        load();
       } catch (err) { $('#st').innerHTML = `<span style="color:#b42318;">${esc(err.message)}</span>`; $('#go').disabled = false; $('#pass').value = ''; }
     };
   }
