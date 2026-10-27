@@ -7,7 +7,7 @@
 <meta name="description" content="Small automations and tools that save time on everyday work.">
 <title>Nadav Automations</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M10 22V10l12 12V10%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <header class="top">
@@ -48,10 +48,25 @@
 
   <h2 id="contact">Questions?</h2>
   <p>Ask anything below – or email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
-  <div class="formcard">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfDJTG7ZXgilgmlJ1SHXUb3wXl-_w1Oc6QwPsimgDVk98pnA/viewform?embedded=true" title="Questions form" loading="lazy">Loading the form…</iframe>
-  </div>
-  <p class="muted">The form is run by Google Forms. Your answers are only seen by the site's owner – see the <a href="privacy.html#questions">privacy policy</a>.</p>
+  <form class="qform" id="qform" novalidate>
+    <div class="field">
+      <label for="qName">Name</label>
+      <input id="qName" name="name" type="text" maxlength="80" autocomplete="name" required>
+    </div>
+    <div class="field">
+      <label for="qEmail">Email</label>
+      <input id="qEmail" name="email" type="email" maxlength="200" autocomplete="email" required>
+      <small>So I can reply. It's never shared.</small>
+    </div>
+    <div class="field">
+      <label for="qText">Your question</label>
+      <textarea id="qText" name="question" rows="5" maxlength="2000" required></textarea>
+      <small class="count" id="qCount">0 / 2000</small>
+    </div>
+    <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="qbar"><button type="submit" class="btn" id="qSend">Send question</button><span id="qMsg" class="qmsg" role="status"></span></div>
+  </form>
+  <p class="muted">Your answers are only seen by the site's owner – see the <a href="privacy.html#questions">privacy policy</a>.</p>
 </main>
 
 <footer>
@@ -62,5 +77,6 @@
     <a class="right" href="admin/">Admin</a>
   </div>
 </footer>
+<script src="site.js?v=1"></script>
 </body>
 </html>
