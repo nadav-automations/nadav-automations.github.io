@@ -5,19 +5,19 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 "Segoe
 a { color: var(--accent); }
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
-/* Top bar: a floating rounded bar with a soft gradient; it sticks to the top and gains a shadow when you scroll */
-.top { position: sticky; top: 0; z-index: 40; padding: 12px 16px 0; pointer-events: none; }
-.top .wrap { pointer-events: auto; position: relative; isolation: isolate; display: flex; align-items: center; gap: 20px; min-height: 58px; flex-wrap: wrap; padding: 0 14px 0 18px; border-radius: 18px; background: rgba(72,82,190,.42); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); border: 1px solid rgba(255,255,255,.22); box-shadow: 0 6px 20px rgba(63,73,173,.18); transition: box-shadow .4s ease; }
-/* The solid gradient sits on its own layer and fades out as you scroll, revealing the frosted glass underneath (a fade, so no flicker) */
-.top .wrap::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(115deg, #3f49ad 0%, #535FC1 45%, #6c63d4 100%); transition: opacity .45s ease; }
-.top.scrolled .wrap::before { opacity: .3; }
-.top .wrap::after { content: ""; position: absolute; left: 24px; right: 24px; bottom: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(242,184,75,.85) 30%, rgba(242,184,75,.85) 70%, transparent); opacity: .7; }
-.top.scrolled .wrap { box-shadow: 0 12px 34px rgba(29,34,51,.22), inset 0 1px 0 rgba(255,255,255,.25); }
+/* Top bar: full width with softly rounded bottom corners. The gradient sits on its own layer and fades as you
+   scroll, revealing frosted glass underneath (only the opacity changes, so there's no flicker) */
+.top { position: sticky; top: 0; z-index: 40; isolation: isolate; border-radius: 0 0 22px 22px; background: rgba(66,76,182,.5); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); border-bottom: 1px solid rgba(255,255,255,.22); box-shadow: 0 6px 20px rgba(63,73,173,.18); transition: box-shadow .4s ease; }
+.top::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(115deg, #3f49ad 0%, #535FC1 45%, #6c63d4 100%); transition: opacity .45s ease; }
+.top::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(242,184,75,.85) 30%, rgba(242,184,75,.85) 70%, transparent); opacity: .7; }
+.top.scrolled { box-shadow: 0 12px 34px rgba(29,34,51,.22); }
+.top.scrolled::before { opacity: .45; }
+.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 62px; flex-wrap: wrap; }
 .brand { color: #fff; font-weight: bold; text-decoration: none; font-size: 1.08rem; display: flex; align-items: center; gap: 10px; letter-spacing: -.01em; }
 .brand svg { flex: none; transition: transform .35s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 3px 8px rgba(0,0,0,.18)); }
 .brand:hover svg { transform: rotate(-8deg) scale(1.06); }
 .top nav { display: flex; gap: 4px; margin-left: auto; }
-.top nav a { position: relative; color: rgba(255,255,255,.88); text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: .94rem; transition: color .2s, background .2s; }
+.top nav a { position: relative; color: rgba(255,255,255,.92); text-shadow: 0 1px 2px rgba(29,34,51,.25); text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: .94rem; transition: color .2s, background .2s; }
 .top nav a::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px; border-radius: 2px; background: #f2b84b; transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
 .top nav a:hover, .top nav a.on { color: #fff; background: rgba(255,255,255,.1); }
 .top nav a:hover::after, .top nav a.on::after { transform: scaleX(1); }
@@ -84,8 +84,8 @@ footer .right { margin-left: auto; }
 @media (max-width: 600px) {
   .hero { padding: 36px 0 18px; }
   .hero h1 { font-size: 1.8rem; }
-  .top { padding: 8px 10px 0; }
-  .top .wrap { padding: 8px 12px 6px; gap: 2px 20px; border-radius: 16px; }
+  .top { border-radius: 0 0 18px 18px; }
+  .top .wrap { padding-top: 8px; padding-bottom: 6px; gap: 2px 20px; }
   .top nav { margin-left: -11px; flex-basis: 100%; }
   footer .right { margin-left: 0; }
 }
