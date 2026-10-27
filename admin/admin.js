@@ -69,32 +69,32 @@
   });
   window.addEventListener('popstate', () => load());
 
-  // ---- Questions from the website's form
+  // ---- Inquiries from the website's form
   const QF = { q: '' };
   let Q = null;
   async function loadQuestions() {
-    app.innerHTML = '<h1>Questions</h1><p class="loading">Loading…</p>';
+    app.innerHTML = '<h1>Inquiries</h1><p class="loading">Loading…</p>';
     try { Q = await call({ a: 'questions' }); }
-    catch (err) { return err.badKey ? keyPage(err.message) : (app.innerHTML = `<h1>Questions</h1><div class="msg err">${esc(err.message)}</div>`); }
+    catch (err) { return err.badKey ? keyPage(err.message) : (app.innerHTML = `<h1>Inquiries</h1><div class="msg err">${esc(err.message)}</div>`); }
     drawQuestions();
   }
   function drawQuestions() {
     if (!Q.linked) {
-      app.innerHTML = `<h1>Questions</h1><div class="card"><p>No answers yet. To show the website form's answers here, open the form → <b>Responses</b> → <b>Link to Sheets</b> → <b>Select existing spreadsheet</b> → <b>Nadav Automations – activity</b>.</p></div>`;
+      app.innerHTML = `<h1>Inquiries</h1><div class="card"><p>No inquiries yet. To show the website form's answers here, open the form → <b>Responses</b> → <b>Link to Sheets</b> → <b>Select existing spreadsheet</b> → <b>Nadav Automations – activity</b>.</p></div>`;
       return;
     }
     const q = QF.q.trim().toLowerCase();
     const rows = Q.rows.filter(r => !q || r.join(' ').toLowerCase().includes(q));
     const emailCol = Q.headers.findIndex(h => /e-?mail/i.test(h));
-    app.innerHTML = `<h1>Questions</h1>
-      <div class="tools filters"><input type="search" id="qq" placeholder="Search questions…" value="${esc(QF.q)}"><button class="light" id="refresh">Refresh</button></div>
-      ${!Q.rows.length ? '<div class="card"><p style="margin:0;">No questions yet. When someone uses the form on your homepage, it appears here.</p></div>' : ''}
+    app.innerHTML = `<h1>Inquiries</h1>
+      <div class="tools filters"><input type="search" id="qq" placeholder="Search inquiries…" value="${esc(QF.q)}"><button class="light" id="refresh">Refresh</button></div>
+      ${!Q.rows.length ? '<div class="card"><p style="margin:0;">No inquiries yet. When someone uses the form on your homepage, it appears here.</p></div>' : ''}
       ${rows.map(r => `<div class="card qa">
         <div class="muted">${esc(r[0])}</div>
         <dl>${Q.headers.slice(1).map((h, i) => r[i + 1] ? `<dt>${esc(h)}</dt><dd>${i + 1 === emailCol ? `<a href="mailto:${esc(r[i + 1])}">${esc(r[i + 1])}</a>` : esc(r[i + 1])}</dd>` : '').join('')}</dl>
         ${emailCol > 0 && r[emailCol] ? `<a class="btn small" href="mailto:${esc(r[emailCol])}?subject=${encodeURIComponent('Re: your question')}">Reply by email</a>` : ''}
-      </div>`).join('') || (Q.rows.length ? '<p class="muted">No questions match.</p>' : '')}
-      <p class="muted">${rows.length} question${rows.length === 1 ? '' : 's'}.</p>`;
+      </div>`).join('') || (Q.rows.length ? '<p class="muted">No inquiries match.</p>' : '')}
+      <p class="muted">${rows.length} inquir${rows.length === 1 ? 'y' : 'ies'}.</p>`;
     $('#qq').oninput = e => { QF.q = e.target.value; const pos = e.target.selectionStart; drawQuestions(); const el = $('#qq'); el.focus(); el.setSelectionRange(pos, pos); };
     $('#refresh').onclick = loadQuestions;
   }
