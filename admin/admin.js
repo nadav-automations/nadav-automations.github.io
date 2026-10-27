@@ -59,12 +59,13 @@
   const F = { days: '7', tool: '', who: '', q: '' };
   let ROWS = [];
 
-  const VIEW = () => (/[?&]p=questions/.test(location.search) ? 'questions' : 'activity');
+  const VIEW = () => (/[?&]p=questions/.test(location.search) ? 'questions' : /[?&]p=website/.test(location.search) ? 'website' : 'activity');
   function tabs() {
     $('#tabAct').classList.toggle('on', VIEW() === 'activity');
     $('#tabQ').classList.toggle('on', VIEW() === 'questions');
+    $('#tabW').classList.toggle('on', VIEW() === 'website');
   }
-  [['#tabAct', ''], ['#tabQ', '?p=questions']].forEach(([id, q]) => {
+  [['#tabAct', ''], ['#tabQ', '?p=questions'], ['#tabW', '?p=website']].forEach(([id, q]) => {
     $(id).onclick = e => { e.preventDefault(); history.pushState(null, '', location.pathname + q); load(); };
   });
   window.addEventListener('popstate', () => load());
@@ -99,11 +100,59 @@
     $('#refresh').onclick = loadQuestions;
   }
 
+
+  // ---- Website visitors (Google Analytics, via the hub)
+  const GA_LINK = 'https://analytics.google.com/analytics/web/#/p560891745/reports/intelligenthome';
+  const WF = { days: '28' };
+  const num = n => Number(n || 0).toLocaleString('en-GB');
+  const PAGE_NAMES = { '/': 'Homepage', '/index.html': 'Homepage', '/privacy.html': 'Privacy policy' };
+  const cap = s => String(s || '').replace(/^./, c => c.toUpperCase());
+  async function loadWebsite() {
+    app.innerHTML = '<h1>Website</h1><p class="loading">Loading visitor numbers…</p>';
+    let W;
+    try { W = await call({ a: 'website', days: WF.days }); }
+    catch (err) { return err.badKey ? keyPage(err.message) : (app.innerHTML = `<h1>Website</h1><div class="msg err">${esc(err.message)}</div>`); }
+    const max = Math.max(1, ...W.daily.map(d => d.users));
+    const step = W.daily.length > 31 ? 14 : W.daily.length > 8 ? 7 : 1;
+    const list = (title, items, label, value, unit) => {
+      const top = Math.max(1, ...items.map(value));
+      return `<div class="card wl"><h2>${title}</h2>${items.length ? `<ol>${items.map(it => `<li><span class="wn">${esc(label(it))}</span><span class="wv">${num(value(it))}</span><span class="wb"><i style="width:${Math.max(2, value(it) / top * 100)}%"></i></span></li>`).join('')}</ol>` : '<p class="muted">Nothing yet.</p>'}<p class="wunit">${unit}</p></div>`;
+    };
+    app.innerHTML = `<h1>Website</h1>
+      <div class="tools filters">
+        <select id="wdays">${[['7', 'Last 7 days'], ['28', 'Last 28 days'], ['90', 'Last 90 days']].map(([v, t]) => `<option value="${v}"${v === WF.days ? ' selected' : ''}>${t}</option>`).join('')}</select>
+        <button class="light" id="refresh">Refresh</button>
+        <a class="galink" href="${GA_LINK}" target="_blank" rel="noopener">Open Google Analytics ↗</a>
+      </div>
+      <div class="wnow"><span class="dot${W.now ? ' live' : ''}"></span><b>${num(W.now)}</b> on the site right now</div>
+      <div class="wtiles">
+        <div class="wtile"><span>Visitors</span><b>${num(W.totals.users)}</b></div>
+        <div class="wtile"><span>Page views</span><b>${num(W.totals.views)}</b></div>
+        <div class="wtile"><span>Visits</span><b>${num(W.totals.visits)}</b></div>
+      </div>
+      <div class="card wchart"><h2>Visitors per day</h2>
+        <div class="wplot"><span class="wmax">${num(max)}</span>
+          <div class="wbars">${W.daily.map((d, i) => `<div class="wbar" tabindex="0" data-tip="${esc(d.date)}: ${num(d.users)} visitor${d.users === 1 ? '' : 's'}, ${num(d.views)} page view${d.views === 1 ? '' : 's'}"><i style="height:${d.users ? Math.max(3, d.users / max * 100) : 0}%"></i></div>`).join('')}</div>
+        </div>
+        <div class="waxis">${W.daily.map((d, i) => `<span>${i % step === 0 || i === W.daily.length - 1 ? esc(d.date.replace(/^\w+ /, '')) : ''}</span>`).join('')}</div>
+      </div>
+      <div class="wgrid">
+        ${list('Top pages', W.pages, p => PAGE_NAMES[p.path] || p.path, p => p.views, 'page views')}
+        ${list('Countries', W.countries, c => c.name, c => c.users, 'visitors')}
+        ${list('How people found the site', W.sources, s => s.name, s => s.visits, 'visits')}
+        ${list('Devices', W.devices, d => cap(d.name), d => d.users, 'visitors')}
+      </div>
+      <p class="muted">Only counts visitors who clicked Accept on the cookie banner. Google can take a few hours to catch up. Updated ${esc(W.updated)}.</p>`;
+    $('#wdays').onchange = e => { WF.days = e.target.value; loadWebsite(); };
+    $('#refresh').onclick = loadWebsite;
+  }
+
   async function load() {
     tabs();
     if (!SESSION) return keyPage();
     document.body.classList.add('admin-in');
     if (VIEW() === 'questions') { $('#forget').hidden = false; return loadQuestions(); }
+    if (VIEW() === 'website') { $('#forget').hidden = false; return loadWebsite(); }
     $('#forget').hidden = false;
     app.innerHTML = '<h1>Activity</h1><p class="loading">Loading…</p>';
     try { ROWS = (await call({ a: 'list', days: F.days })).rows; }
