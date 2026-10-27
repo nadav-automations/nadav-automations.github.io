@@ -59,13 +59,14 @@
   const F = { days: '7', tool: '', who: '', q: '' };
   let ROWS = [];
 
-  const VIEW = () => (/[?&]p=questions/.test(location.search) ? 'questions' : /[?&]p=website/.test(location.search) ? 'website' : 'activity');
+  // Website is the first tab and the page Admin opens on (old ?p=website links still work)
+  const VIEW = () => (/[?&]p=questions/.test(location.search) ? 'questions' : /[?&]p=activity/.test(location.search) ? 'activity' : 'website');
   function tabs() {
     $('#tabAct').classList.toggle('on', VIEW() === 'activity');
     $('#tabQ').classList.toggle('on', VIEW() === 'questions');
     $('#tabW').classList.toggle('on', VIEW() === 'website');
   }
-  [['#tabAct', ''], ['#tabQ', '?p=questions'], ['#tabW', '?p=website']].forEach(([id, q]) => {
+  [['#tabW', ''], ['#tabAct', '?p=activity'], ['#tabQ', '?p=questions']].forEach(([id, q]) => {
     $(id).onclick = e => { e.preventDefault(); history.pushState(null, '', location.pathname + q); load(); };
   });
   window.addEventListener('popstate', () => load());
@@ -153,6 +154,7 @@
     document.body.classList.add('admin-in');
     if (VIEW() === 'questions') { $('#forget').hidden = false; return loadQuestions(); }
     if (VIEW() === 'website') { $('#forget').hidden = false; return loadWebsite(); }
+    // (anything else is the Activity tab)
     $('#forget').hidden = false;
     app.innerHTML = '<h1>Activity</h1><p class="loading">Loading…</p>';
     try { ROWS = (await call({ a: 'list', days: F.days })).rows; }
