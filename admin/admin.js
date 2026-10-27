@@ -33,6 +33,7 @@
   }
 
   function keyPage(problem) {
+    document.body.classList.remove('admin-in');
     $('#forget').hidden = true;
     app.innerHTML = `<div class="card login">
         <h1 style="margin-top:0;">Sign in</h1>
@@ -100,6 +101,7 @@
   async function load() {
     tabs();
     if (!SESSION) return keyPage();
+    document.body.classList.add('admin-in');
     if (VIEW() === 'questions') { $('#forget').hidden = false; return loadQuestions(); }
     $('#forget').hidden = false;
     app.innerHTML = '<h1>Activity</h1><p class="loading">Loading…</p>';

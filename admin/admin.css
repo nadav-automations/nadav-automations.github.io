@@ -13,3 +13,15 @@ table.log td.when { white-space: nowrap; color: var(--muted); }
 .qa dt { color: var(--muted); font-size: .9rem; }
 .qa dd { margin: 0; white-space: pre-wrap; }
 @media (max-width: 600px) { .qa dl { grid-template-columns: 1fr; } .qa dt { margin-top: 6px; } }
+
+/* ---- Admin area theme (only once signed in) ---- */
+.adminpill { display: none; }
+body.admin-in { --bg: #f1f2f6; }
+body.admin-in { background: var(--bg); }
+body.admin-in .top { background: #1d2233; border-bottom: 3px solid #f2b84b; }
+body.admin-in .brand span { opacity: 1; }
+body.admin-in .adminpill { display: inline-block; background: #f2b84b; color: #1d2233; font-size: .72rem; font-weight: bold; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: 2px; }
+body.admin-in nav a.on, body.admin-in nav a:hover { background: rgba(242,184,75,.22); }
+body.admin-in h1 { display: flex; align-items: center; gap: 10px; }
+body.admin-in .stat { border-left: 4px solid #f2b84b; }
+body.admin-in table.log th { background: #e6e8ef; }
