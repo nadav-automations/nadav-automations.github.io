@@ -171,3 +171,32 @@ body.compact .newbtn { padding: 4px 10px; font-size: .82rem; }
   .erow .ibtn { opacity: 1; }
   .newbtn { padding: 5px 10px; }
 }
+
+/* ---- Footer (same as the homepage) ---- */
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main#app { flex: 1 0 auto; width: 100%; }
+.sitefoot { margin-top: 56px; border-top: 1px solid var(--line); padding: 18px 0 32px; font-size: .9rem; color: var(--muted); }
+.sitefoot .wrap { display: flex; gap: 18px; flex-wrap: wrap; }
+.sitefoot a { color: var(--muted); }
+.sitefoot .right { margin-left: auto; }
+@media (max-width: 600px) { .sitefoot .right { margin-left: 0; } }
+body.compact .sitefoot { display: none; }
+
+/* ---- Polished header buttons and menu (icons) ---- */
+.ic { width: 17px; height: 17px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.newbtn, .popbtn { display: inline-flex; align-items: center; gap: 6px; }
+.newbtn .ic { width: 15px; height: 15px; stroke-width: 2.4; }
+.popbtn { color: #fff !important; text-decoration: none; font-size: .88rem; padding: 6px 12px; border-radius: 7px; border: 1px solid rgba(255,255,255,.45); white-space: nowrap; }
+.popbtn:hover { background: rgba(255,255,255,.15); }
+.popbtn .ic { width: 16px; height: 16px; }
+.menubtn { display: inline-flex; align-items: center; gap: 4px; padding: 5px 8px 5px 12px; }
+.menubtn .chev { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .15s; }
+.menubtn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.dropdown { padding: 6px; min-width: 240px; }
+.dropdown a { display: flex; align-items: center; gap: 11px; padding: 9px 12px; }
+.dropdown a .ic { color: var(--muted); }
+.dropdown a:hover .ic { color: var(--accent); }
+.dropdown a.quiet { color: var(--muted); font-size: .88rem; }
+.dropdown a[hidden] { display: none; }
+body.compact .popbtn { display: none; }
+@media (max-width: 700px) { .popbtn { display: none; } }
