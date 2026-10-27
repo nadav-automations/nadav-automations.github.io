@@ -41,6 +41,15 @@ h2 { font-size: 1.25rem; margin: 36px 0 14px; }
 .points li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; font-size: .95rem; }
 .points b { display: block; margin-bottom: 4px; }
 
+/* ☰ menu button (only shown on phones) */
+.menubtn { display: none; place-items: center; margin-left: auto; width: 40px; height: 40px; padding: 0; border-radius: 10px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.1); color: #fff; cursor: pointer; }
+.menubtn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.menubtn path { transition: transform .25s ease, opacity .2s ease; transform-origin: 12px 12px; }
+.top.open .menubtn .l1 { transform: translateY(5px) rotate(45deg); }
+.top.open .menubtn .l2 { opacity: 0; }
+.top.open .menubtn .l3 { transform: translateY(-5px) rotate(-45deg); }
+@keyframes menuin { from { opacity: 0; transform: translateY(-6px); } }
+
 /* Text pages (privacy policy): one calm reading column */
 .page { max-width: 760px; padding-top: 44px; padding-bottom: 20px; }
 .phead { margin-bottom: 22px; }
@@ -85,8 +94,13 @@ footer .right { margin-left: auto; }
   .hero { padding: 36px 0 18px; }
   .hero h1 { font-size: 1.8rem; }
   .top { border-radius: 0 0 50% 50% / 0 0 10px 10px; }
-  .top .wrap { padding-top: 8px; padding-bottom: 6px; gap: 2px 20px; }
-  .top nav { margin-left: -11px; flex-basis: 100%; }
+  .top .wrap { gap: 0 12px; padding-top: 10px; padding-bottom: 10px; min-height: 0; }
+  /* Phones: the links fold into a ☰ menu that drops down as a card under the header (nothing on the page moves) */
+  .menubtn { display: grid; }
+  .top nav { display: none; position: absolute; top: calc(100% + 8px); left: 12px; right: 12px; flex-direction: column; gap: 2px; margin: 0; padding: 8px; border-radius: 16px; background: linear-gradient(135deg, #4650b8, #6a62d3); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 16px 40px rgba(29,34,51,.28); }
+  .top.open nav { display: flex; animation: menuin .22s ease; }
+  .top nav a { padding: 11px 12px; font-size: 1rem; }
+  .top nav a::after { left: 12px; right: auto; width: 28px; bottom: 6px; }
   footer .right { margin-left: 0; }
 }
 

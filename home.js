@@ -10,6 +10,17 @@
   const onScroll = () => top && top.classList.toggle('scrolled', scrollY > 8);
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
+  // ☰ menu on phones: opens and closes the links, and closes again after you pick one
+  const mb = $('.menubtn');
+  if (top && mb) {
+    const setOpen = open => { top.classList.toggle('open', open); mb.setAttribute('aria-expanded', String(open)); mb.setAttribute('aria-label', open ? 'Close menu' : 'Menu'); };
+    mb.addEventListener('click', () => setOpen(!top.classList.contains('open')));
+    $$('#sitenav a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+    document.addEventListener('click', e => { if (!top.contains(e.target)) setOpen(false); });
+    addEventListener('resize', () => { if (innerWidth > 600) setOpen(false); });
+  }
+
   // The logo tilts while you scroll (down one way, up the other) and springs back when you stop
   const logo = $('.brand svg');
   if (logo && !still) {
