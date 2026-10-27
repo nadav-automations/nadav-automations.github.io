@@ -10,6 +10,19 @@
   const onScroll = () => top && top.classList.toggle('scrolled', scrollY > 8);
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
+  // The logo tilts while you scroll (down one way, up the other) and springs back when you stop
+  const logo = $('.brand svg');
+  if (logo && !still) {
+    let lastY = scrollY, idle = null;
+    addEventListener('scroll', () => {
+      const dy = scrollY - lastY; lastY = scrollY;
+      if (!dy) return;
+      logo.style.transform = `rotate(${Math.max(-14, Math.min(14, dy * .6)) * -1}deg) scale(1.06)`;
+      clearTimeout(idle);
+      idle = setTimeout(() => { logo.style.transform = ''; }, 160);
+    }, { passive: true });
+  }
+
   // Fade things in as they come into view, and underline the section you're in
   const links = $$('.top nav a');
   if ('IntersectionObserver' in window) {
