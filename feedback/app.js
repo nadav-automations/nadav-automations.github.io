@@ -159,6 +159,7 @@
       e.preventDefault();
       popup(location.pathname + location.search + (location.search ? '&' : '?') + 'pop=1');
     };
+    if ($('#navAdmin')) $('#navAdmin').hidden = me().role !== 'owner' || POPOUT;
     const sheet = $('#navSheet');
     if (sheet) { sheet.hidden = !BOOT.sheetUrl; if (BOOT.sheetUrl) sheet.href = BOOT.sheetUrl; }
     who.innerHTML = `${esc(me().name)}${me().role === 'viewer' ? ' (view only)' : ''} · <a href="#" id="forget">Forget me</a>`;

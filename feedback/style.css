@@ -2,7 +2,7 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 Arial, Helvetica, sans-serif; }
-.wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
 a { color: var(--accent); }
 h1 { font-size: 1.45rem; margin: 22px 0 14px; line-height: 1.25; }
 h2 { font-size: 1.1rem; margin: 26px 0 8px; color: var(--accent); }
@@ -23,7 +23,7 @@ nav a:hover, nav a.on { background: rgba(255,255,255,.18); }
 .chipbtn:hover { background: rgba(255,255,255,.15); }
 .who { font-size: .85rem; opacity: .9; margin-left: 6px; }
 .who a { color: #fff; }
-@media (max-width: 900px) {
+@media (max-width: 1060px) {
   .bar { flex-wrap: wrap; gap: 4px 12px; padding-top: 8px; padding-bottom: 8px; }
   .brand { flex: 1; }
   nav { order: 3; flex-basis: 100%; margin-left: -11px; flex-wrap: wrap; }
