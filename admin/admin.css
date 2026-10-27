@@ -36,3 +36,14 @@ body.admin-in table.log th { background: #e6e8ef; }
 .leave h2 { margin: 0 0 8px; font-size: 1.15rem; color: var(--fg); }
 .leave p { color: var(--muted); }
 .leavebar { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+
+/* Admin colours for buttons, links and inputs (navy and gold instead of purple) */
+body.admin-in { --accent: #1d2233; --accent-dark: #0f131f; --lilac: #f6ead2; }
+body.admin-in button:not(.light):not(.iconbtn), body.admin-in .btn { background: #1d2233; color: #fff !important; }
+body.admin-in button:not(.light):not(.iconbtn):hover, body.admin-in .btn:hover { background: #0f131f; }
+body.admin-in .leave h2 { display: flex; align-items: center; gap: 8px; }
+body.admin-in .leave h2::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #f2b84b; }
+body.admin-in .leave { border-top: 4px solid #f2b84b; }
+body.admin-in a { color: #8a5a00; }
+body.admin-in .top a, body.admin-in .sitefoot a { color: #fff; }
+body.admin-in input:focus, body.admin-in select:focus, body.admin-in textarea:focus { outline-color: #f2b84b; }
