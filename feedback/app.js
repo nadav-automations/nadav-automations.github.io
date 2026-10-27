@@ -127,6 +127,8 @@
   window.addEventListener('popstate', () => { DIRTY = false; render(); });
   window.addEventListener('beforeunload', e => { if (DIRTY) { e.preventDefault(); e.returnValue = ''; } });
   document.addEventListener('click', e => {
+    const plain = e.target.closest('a:not([data-go])');
+    if (plain && plain.getAttribute('href') !== '#') return;   // ordinary links (order numbers, sheet…) open as normal
     const a = e.target.closest('[data-go]');
     if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
     e.preventDefault();
@@ -139,6 +141,17 @@
     t.textContent = text; t.hidden = false;
     clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, ms || 4000);
   }
+
+  // Name menu in the top bar (Personal links, Pop out, Sheet, Admin, Forget me)
+  (() => {
+    const btn = $('#menuBtn'), menu = $('#menu');
+    if (!btn || !menu) return;
+    const set = open => { menu.hidden = !open; btn.setAttribute('aria-expanded', String(open)); };
+    btn.onclick = e => { e.stopPropagation(); set(menu.hidden); };
+    menu.addEventListener('click', () => set(false));
+    document.addEventListener('click', e => { if (!e.target.closest('#menuWrap')) set(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  })();
 
   function paintTop() {
     const nav = $('#nav'), who = $('#who'), side = $('#side');
@@ -162,7 +175,7 @@
     if ($('#navAdmin')) $('#navAdmin').hidden = me().role !== 'owner' || POPOUT;
     const sheet = $('#navSheet');
     if (sheet) { sheet.hidden = !BOOT.sheetUrl; if (BOOT.sheetUrl) sheet.href = BOOT.sheetUrl; }
-    who.innerHTML = `${esc(me().name)}${me().role === 'viewer' ? ' (view only)' : ''} · <a href="#" id="forget">Forget me</a>`;
+    who.textContent = `${me().name}${me().role === 'viewer' ? ' (view only)' : ''}`;
     $('#forget').onclick = e => {
       e.preventDefault();
       if (confirm('Forget your personal link on this browser? You\'ll need the link from your email to get back in.')) { forget(); go('list'); }
@@ -238,17 +251,12 @@
             .map(([k, t]) => `<button class="${FILTER.show === k ? 'on' : ''}" data-f="${k}">${t}</button>`).join('')}
         </div>
         <input type="search" id="q" placeholder="Search headlines, descriptions, order numbers…" value="${esc(FILTER.q)}">
-        ${viewer ? '' : `<a href="?p=new" class="btn" id="listNew" title="Opens the form in a small window">＋ New entry</a>`}
+
       </div>
       <div id="list"></div>`);
     $$('.filters button').forEach(b => b.onclick = () => { FILTER.show = b.dataset.f; pageList(paint); });
     $('#q').oninput = () => { FILTER.q = $('#q').value; drawList(); };
-    // In a normal tab this opens the form in a small window; inside the small window it just opens the form
-    if ($('#listNew')) $('#listNew').onclick = e => {
-      if (e.ctrlKey || e.metaKey || e.shiftKey) return;
-      e.preventDefault();
-      if (POPOUT) go('new'); else popup('./?p=new&pop=1');
-    };
+
     drawList();
   }
   function drawList() {
@@ -259,22 +267,18 @@
       (FILTER.show !== 'high' || e.priority === 'High') &&
       (!q || [pad(e.id), e.headline, e.description, e.type, e.name, (e.orders || []).join(' ')].join(' ').toLowerCase().includes(q))
     ).sort((a, b) => b.id - a.id);
-    $('#list').innerHTML = list.length ? list.map(e => `
-      <div class="card entry">
-        <a class="id" href="?p=view&id=${e.id}" data-go="view" data-id="${e.id}">${pad(e.id)}<span class="pri">${chip(e.priority)}</span></a>
-        <div>
-          ${e.updated ? `<div class="upd">UPDATED ${esc(e.updated)}</div>` : ''}
-          <h3>${link('view', e.id, esc(e.headline || 'No headline'))}</h3>
-          <div class="meta">${chip(e.type)} ${chip(e.name)} <span>${esc(e.date)}</span>
-            ${e.orders && e.orders.length ? `<span>Order ${orderLinks(e.orders)}</span>` : ''}
-            ${e.shots ? `<span>${e.shots} screenshot${e.shots === 1 ? '' : 's'}</span>` : ''}
-            <span>${e.fedBack ? '✓ Sent' : 'Not yet sent'}</span></div>
-        </div>
-        <div class="acts">
-          ${link('view', e.id, 'View', 'btn light small')}
-          ${canEdit(e) ? link('edit', e.id, '✎ Edit', 'btn light small') + link('shot', e.id, '＋ Screenshot', 'btn light small') : ''}
-        </div>
-      </div>`).join('') : '<p class="muted">No entries match.</p>';
+    const ICON_SHOT = '<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M3 6.5h3l1.5-2h5l1.5 2h3v9H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="10.8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+    $('#list').innerHTML = list.length ? `<div class="rows">${list.map(e => `
+      <div class="entry erow" data-go="view" data-id="${e.id}" title="Open entry ${pad(e.id)}">
+        <span class="rid">${pad(e.id)}</span>
+        <span class="rpri">${chip(e.priority)}</span>
+        <span class="rmain">
+          <span class="rh">${esc(e.headline || 'No headline')}</span>
+          <span class="rm"><span class="dot" style="background:${esc(colour(e.type))}"></span>${esc(e.type)} · ${esc(e.name)} · ${esc(e.date)}${e.orders && e.orders.length ? ` · Order ${orderLinks(e.orders)}` : ''}${e.shots ? ` · <span class="shotn" title="${e.shots} screenshot${e.shots === 1 ? '' : 's'}">${ICON_SHOT}${e.shots}</span>` : ''}</span>
+        </span>
+        <span class="rstat">${e.updated ? '<span class="badge upd" title="Changed after it was sent">Updated</span>' : ''}${e.fedBack ? '<span class="badge sent">✓ Sent</span>' : ''}</span>
+        <span class="racts">${canEdit(e) ? `<a href="?p=edit&id=${e.id}" data-go="edit" data-id="${e.id}" class="ibtn act-edit" title="Edit">✎</a><a href="?p=shot&id=${e.id}" data-go="shot" data-id="${e.id}" class="ibtn act-shot" title="Add a screenshot">＋</a>` : ''}</span>
+      </div>`).join('')}</div>` : '<p class="muted">No entries match.</p>';
   }
 
   // ---- From the sheet's "＋ New entry" link: one click opens the form as a small window,
