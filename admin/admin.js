@@ -11,29 +11,39 @@
   };
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  let KEY = store.get('hubKey') || '';
-  const m = /(?:^#|&)k=([a-f0-9]{40})/.exec(location.hash);
-  if (m) { KEY = m[1]; store.set('hubKey', KEY); history.replaceState(null, '', location.pathname); }
+  // Signed-in session (the old #k= Admin links are no longer used)
+  store.del('hubKey');
+  if (location.hash) history.replaceState(null, '', location.pathname);
+  let SESSION = store.get('hubSession') || '';
 
   async function call(params) {
     if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(API)) throw new Error('The hub address is missing from admin/config.js.');
     let res, j;
-    try { res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ k: KEY }, params)) }); }
+    try { res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ s: SESSION }, params)) }); }
     catch (e) { throw new Error('Couldn\'t reach the hub. Check your internet connection and try again.'); }
     try { j = await res.json(); } catch (e) { throw new Error('The hub sent back something unexpected.'); }
-    if (!j.ok) { const err = new Error(j.error || 'Something went wrong.'); if (/no longer works/.test(j.error || '')) { store.del('hubKey'); KEY = ''; err.badKey = true; } throw err; }
+    if (!j.ok) { const err = new Error(j.error || 'Something went wrong.'); if (/sign in again/i.test(j.error || '')) { store.del('hubSession'); SESSION = ''; err.badKey = true; } throw err; }
     return j;
   }
 
   function keyPage(problem) {
     $('#forget').hidden = true;
-    app.innerHTML = `<h1>Admin</h1>${problem ? `<div class="msg err">${esc(problem)}</div>` : ''}
-      <div class="card"><p>Open this page with your <b>Admin link</b> (it's in the hub script's Execution log after running <b>showLinks</b>), or paste it here:</p>
-      <div class="row"><input type="text" id="paste" placeholder="Paste your Admin link" style="flex:1;min-width:220px;"><button id="go">Continue</button></div></div>`;
-    $('#go').onclick = () => {
-      const k = /k=([a-f0-9]{40})/.exec($('#paste').value);
-      if (!k) return;
-      KEY = k[1]; store.set('hubKey', KEY); load();
+    app.innerHTML = `<div class="card login">
+        <h1 style="margin-top:0;">Sign in</h1>
+        ${problem ? `<div class="msg err">${esc(problem)}</div>` : ''}
+        <form id="f">
+          <label class="f" for="user">Username</label><input type="text" id="user" autocomplete="username" required>
+          <label class="f" for="pass">Password</label><input type="password" id="pass" autocomplete="current-password" required>
+          <div class="formbar"><span class="status" id="st"></span><button type="submit" id="go">Sign in</button></div>
+        </form></div>`;
+    $('#user').focus();
+    $('#f').onsubmit = async e => {
+      e.preventDefault();
+      $('#go').disabled = true; $('#st').textContent = 'Signing in…';
+      try {
+        const r = await call({ a: 'login', user: $('#user').value, pass: $('#pass').value });
+        SESSION = r.session; store.set('hubSession', SESSION); load();
+      } catch (err) { $('#st').innerHTML = `<span style="color:#b42318;">${esc(err.message)}</span>`; $('#go').disabled = false; $('#pass').value = ''; }
     };
   }
 
@@ -41,7 +51,7 @@
   let ROWS = [];
 
   async function load() {
-    if (!KEY) return keyPage();
+    if (!SESSION) return keyPage();
     $('#forget').hidden = false;
     app.innerHTML = '<h1>Activity</h1><p class="loading">Loading…</p>';
     try { ROWS = (await call({ a: 'list', days: F.days })).rows; }
@@ -78,6 +88,10 @@
     $('#refresh').onclick = load;
   }
 
-  $('#forget').onclick = e => { e.preventDefault(); if (confirm('Forget your Admin link on this browser?')) { store.del('hubKey'); KEY = ''; keyPage(); } };
+  $('#forget').onclick = async e => {
+    e.preventDefault();
+    try { await call({ a: 'logout' }); } catch (err) {}
+    store.del('hubSession'); SESSION = ''; keyPage();
+  };
   load();
 })();
