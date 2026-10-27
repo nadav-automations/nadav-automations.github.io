@@ -7,9 +7,9 @@ a { color: var(--accent); }
 
 /* Top bar: full width with softly rounded bottom corners. The gradient sits on its own layer and fades as you
    scroll, revealing frosted glass underneath (only the opacity changes, so there's no flicker) */
-.top { position: sticky; top: 0; z-index: 40; isolation: isolate; border-radius: 0 0 22px 22px; background: rgba(66,76,182,.5); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); border-bottom: 1px solid rgba(255,255,255,.22); box-shadow: 0 6px 20px rgba(63,73,173,.18); transition: box-shadow .4s ease; }
+.top { position: sticky; top: 0; z-index: 40; isolation: isolate; border-radius: 0 0 50% 50% / 0 0 14px 14px; background: rgba(66,76,182,.5); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); box-shadow: 0 6px 20px rgba(63,73,173,.18); transition: box-shadow .4s ease; }
 .top::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(115deg, #3f49ad 0%, #535FC1 45%, #6c63d4 100%); transition: opacity .45s ease; }
-.top::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(242,184,75,.85) 30%, rgba(242,184,75,.85) 70%, transparent); opacity: .7; }
+.top::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border-bottom: 2px solid rgba(242,184,75,.8); -webkit-mask-image: linear-gradient(90deg, transparent 8%, #000 35%, #000 65%, transparent 92%); mask-image: linear-gradient(90deg, transparent 8%, #000 35%, #000 65%, transparent 92%); pointer-events: none; }
 .top.scrolled { box-shadow: 0 12px 34px rgba(29,34,51,.22); }
 .top.scrolled::before { opacity: .45; }
 .top .wrap { display: flex; align-items: center; gap: 20px; min-height: 62px; flex-wrap: wrap; }
@@ -84,7 +84,7 @@ footer .right { margin-left: auto; }
 @media (max-width: 600px) {
   .hero { padding: 36px 0 18px; }
   .hero h1 { font-size: 1.8rem; }
-  .top { border-radius: 0 0 18px 18px; }
+  .top { border-radius: 0 0 50% 50% / 0 0 10px 10px; }
   .top .wrap { padding-top: 8px; padding-bottom: 6px; gap: 2px 20px; }
   .top nav { margin-left: -11px; flex-basis: 100%; }
   footer .right { margin-left: 0; }
