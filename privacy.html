@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy policy – Nadav Automations</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M10 22V10l12 12V10%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 <header class="top">
@@ -25,16 +25,20 @@
   <ul>
     <li>Your data stays in Google (Sheets and Drive) owned by the person who runs the tool. There's no other server or database.</li>
     <li>Tools are only for people who've been invited. Nothing is sold, shared, used for advertising or used to train AI models.</li>
-    <li>This website doesn't use advertising or tracking cookies.</li>
+    <li>This website uses no advertising cookies. It only counts visits with Google Analytics if you click <b>Accept</b>.</li>
   </ul>
 
   <h2>This website</h2>
-  <p>The site is hosted on GitHub Pages, which may keep standard technical logs (such as IP addresses) to run and protect its service – see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. The site itself sets no cookies.</p>
+  <p>The site is hosted on GitHub Pages, which may keep standard technical logs (such as IP addresses) to run and protect its service – see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. The site sets no cookies unless you accept analytics cookies (see below).</p>
   <p>Some pages remember a few things in your own browser only (its "local storage"), so you don't have to sign in each time:</p>
   <ul>
     <li><b>Feedback app:</b> your personal link, and a copy of the entry list so it opens quickly. Click <b>Forget me</b> in the app to remove them.</li>
     <li><b>Admin page</b> (owner only): that you're signed in (for up to 30 days), and that this browser is trusted. Click <b>Sign out</b> to end the sign-in.</li>
   </ul>
+
+  <h2 id="cookies">Analytics cookies</h2>
+  <p>The homepage and this page ask before using Google Analytics. If you click <b>Accept</b>, Google Analytics sets cookies (named <code>_ga</code> and <code>_ga_…</code>, kept for up to 2 years) to count visits and see which pages are used, roughly where visitors are (country or city) and what kind of device they use. Advertising features are switched off and the data isn't used to identify you. Google processes it under <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
+  <p>If you click <b>Decline</b>, nothing is counted and no cookies are set. You can change your mind at any time with <b>Cookie settings</b> at the bottom of the page. The feedback app and Admin page never use Google Analytics.</p>
 
   <h2>Feedback app</h2>
   <p>A tool a small team uses to log feedback on an order processing app. Entries, descriptions and team details are kept in the owner's Google spreadsheet; screenshots in a Google Drive folder the tool creates. Team members can view the spreadsheet and use the app with their personal link.</p>
@@ -81,8 +85,10 @@
     <span>© Nadav Automations</span>
     <a href="./">Home</a>
     <a href="./#contact">Contact</a>
+    <a href="#" data-cookies>Cookie settings</a>
     <a class="right" href="admin/">Admin</a>
   </div>
 </footer>
+<script src="analytics.js?v=1"></script>
 </body>
 </html>

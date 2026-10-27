@@ -88,3 +88,13 @@ footer .right { margin-left: auto; }
 .tip::before { content: ""; position: absolute; top: -5px; left: 16px; border: 5px solid transparent; border-top: 0; border-bottom-color: #b42318; }
 .tip[hidden] { display: none; }
 .tip:not([hidden]) ~ .err { display: none; }
+
+/* Cookie banner (Google Analytics only runs after Accept) */
+.cookiebar { position: fixed; left: 16px; right: 16px; bottom: 16px; max-width: 640px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 30px rgba(31,36,48,.18); padding: 16px 18px; display: flex; gap: 14px 18px; align-items: center; flex-wrap: wrap; z-index: 50; font-size: .93rem; }
+.cookiebar p { margin: 0; flex: 1 1 300px; }
+.cookiebar .cbtns { display: flex; gap: 8px; margin-left: auto; }
+.cookiebar button { font: inherit; font-weight: bold; padding: 8px 16px; border-radius: 7px; cursor: pointer; border: 1px solid var(--accent); }
+.cookiebar .cyes { background: var(--accent); color: #fff; }
+.cookiebar .cyes:hover { background: var(--accent-dark); }
+.cookiebar .cno { background: #fff; color: var(--accent); }
+.cookiebar .cno:hover { background: var(--lilac); }
