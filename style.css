@@ -5,11 +5,14 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 "Segoe
 a { color: var(--accent); }
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
-/* Top bar: soft gradient, sticks to the top and turns to frosted glass when you scroll */
-.top { position: sticky; top: 0; z-index: 40; background: linear-gradient(115deg, #3f49ad 0%, #535FC1 45%, #6c63d4 100%); box-shadow: 0 1px 0 rgba(255,255,255,.08) inset; transition: background .3s, box-shadow .3s; }
-.top::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(242,184,75,.9) 30%, rgba(242,184,75,.9) 70%, transparent); opacity: .55; }
-.top.scrolled { background: rgba(70,80,180,.86); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 8px 30px rgba(29,34,51,.18); }
-.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 60px; flex-wrap: wrap; }
+/* Top bar: a floating rounded bar with a soft gradient; it sticks to the top and gains a shadow when you scroll */
+.top { position: sticky; top: 0; z-index: 40; padding: 12px 16px 0; pointer-events: none; }
+.top .wrap { pointer-events: auto; position: relative; isolation: isolate; display: flex; align-items: center; gap: 20px; min-height: 58px; flex-wrap: wrap; padding: 0 14px 0 18px; border-radius: 18px; background: rgba(72,82,190,.42); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); border: 1px solid rgba(255,255,255,.22); box-shadow: 0 6px 20px rgba(63,73,173,.18); transition: box-shadow .4s ease; }
+/* The solid gradient sits on its own layer and fades out as you scroll, revealing the frosted glass underneath (a fade, so no flicker) */
+.top .wrap::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(115deg, #3f49ad 0%, #535FC1 45%, #6c63d4 100%); transition: opacity .45s ease; }
+.top.scrolled .wrap::before { opacity: .3; }
+.top .wrap::after { content: ""; position: absolute; left: 24px; right: 24px; bottom: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(242,184,75,.85) 30%, rgba(242,184,75,.85) 70%, transparent); opacity: .7; }
+.top.scrolled .wrap { box-shadow: 0 12px 34px rgba(29,34,51,.22), inset 0 1px 0 rgba(255,255,255,.25); }
 .brand { color: #fff; font-weight: bold; text-decoration: none; font-size: 1.08rem; display: flex; align-items: center; gap: 10px; letter-spacing: -.01em; }
 .brand svg { flex: none; transition: transform .35s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 3px 8px rgba(0,0,0,.18)); }
 .brand:hover svg { transform: rotate(-8deg) scale(1.06); }
@@ -38,11 +41,30 @@ h2 { font-size: 1.25rem; margin: 36px 0 14px; }
 .points li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; font-size: .95rem; }
 .points b { display: block; margin-bottom: 4px; }
 
-/* Text pages (privacy policy) */
-.page { max-width: 780px; padding-top: 36px; padding-bottom: 20px; }
-.page h1 { font-size: 1.9rem; margin: 0 0 6px; }
-.page h2 { color: var(--accent); margin-top: 32px; }
-.page h3 { font-size: 1.02rem; margin: 22px 0 6px; }
+/* Text pages (privacy policy): one calm reading column */
+.page { max-width: 760px; padding-top: 44px; padding-bottom: 20px; }
+.phead { margin-bottom: 22px; }
+.kicker { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.page h1 { font-size: 2.3rem; letter-spacing: -.02em; margin: 4px 0 8px; }
+.page h2 { font-size: 1.25rem; color: var(--fg); margin: 34px 0 10px; padding-top: 26px; border-top: 1px solid var(--line); scroll-margin-top: 76px; }
+.page h3 { font-size: 1.02rem; margin: 22px 0 8px; }
+.page p, .page li { color: #3f4553; }
+.summary { background: linear-gradient(160deg, #eef0fc, #f8f3ea); border: 1px solid #dfe2f6; border-radius: 16px; padding: 20px 22px 10px; }
+.summary h2 { margin: 0 0 10px; padding: 0; border: 0; font-size: 1.05rem; }
+.ticks { list-style: none; padding: 0; }
+.ticks li { position: relative; padding-left: 28px; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 4px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5 9.2l2.6 2.6L13 6.4' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 22px 0 6px; font-size: .88rem; }
+.toc span { color: var(--muted); font-weight: 600; margin-right: 4px; }
+.toc a { text-decoration: none; color: var(--accent-dark); background: #fff; border: 1px solid #dfe2f6; padding: 4px 11px; border-radius: 14px; transition: border-color .2s, background .2s; }
+.toc a:hover { border-color: var(--accent); background: var(--lilac); }
+.page ul:not(.ticks) { padding-left: 20px; }
+.page ul:not(.ticks) li::marker { color: var(--accent); }
+.tablewrap { border: 1px solid var(--line); border-radius: 12px; overflow: auto; margin: 8px 0 16px; background: var(--card); }
+.tablewrap table { margin: 0; border: 0; }
+.tablewrap th, .tablewrap td { border: 0; border-bottom: 1px solid var(--line); }
+.tablewrap tr:last-child td { border-bottom: 0; }
+.tablewrap td:first-child { font-weight: 600; color: var(--fg); width: 38%; }
 p, li { margin: 0 0 10px; }
 .muted { color: var(--muted); font-size: .92rem; }
 table { width: 100%; border-collapse: collapse; background: var(--card); margin: 8px 0 16px; font-size: .93rem; }
@@ -62,7 +84,8 @@ footer .right { margin-left: auto; }
 @media (max-width: 600px) {
   .hero { padding: 36px 0 18px; }
   .hero h1 { font-size: 1.8rem; }
-  .top .wrap { padding-top: 10px; padding-bottom: 4px; gap: 4px 20px; }
+  .top { padding: 8px 10px 0; }
+  .top .wrap { padding: 8px 12px 6px; gap: 2px 20px; border-radius: 16px; }
   .top nav { margin-left: -11px; flex-basis: 100%; }
   footer .right { margin-left: 0; }
 }

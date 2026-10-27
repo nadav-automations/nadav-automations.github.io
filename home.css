@@ -161,3 +161,7 @@
   .slides { min-height: 320px; }
   .carousel { padding: 18px 16px 12px; }
 }
+
+/* The hero runs up behind the floating header, so there's no seam above it */
+.hero { margin-top: -72px; padding-top: 136px; }
+@media (max-width: 600px) { .hero { margin-top: -100px; padding-top: 136px; } }

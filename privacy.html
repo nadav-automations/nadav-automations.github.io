@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy policy – Nadav Automations</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23535FC1%22%2F%3E%3Cpath%20d%3D%22M11%2023.5V10l10%2013%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M21%2023V9.5%22%20fill%3D%22none%22%20stroke%3D%22%23f2b84b%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2221%22%20cy%3D%229.5%22%20r%3D%222.6%22%20fill%3D%22%23f2b84b%22%2F%3E%3C%2Fsvg%3E">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
-<header class="top">
+<header class="top" id="top">
   <div class="wrap">
     <a class="brand" href="./"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M11 23.5V10l10 13" fill="none" stroke="#535FC1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 23V9.5" fill="none" stroke="#E9A92F" stroke-width="2.6" stroke-linecap="round"/><circle cx="21" cy="9.5" r="2.6" fill="#E9A92F"/></svg> Nadav Automations</a>
     <nav aria-label="Sections"><a href="./#tools">Tools</a><a href="./#data">How it works</a><a href="./#contact">Contact</a></nav>
@@ -16,20 +16,27 @@
 </header>
 
 <main class="wrap page">
-  <h1>Privacy policy</h1>
-  <p class="muted">Last updated 27 October 2026</p>
+  <div class="phead">
+    <span class="kicker">Privacy</span>
+    <h1>Privacy policy</h1>
+    <p class="muted">Last updated 27 October 2026 · Covers this website and every tool listed on it · Questions: <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a></p>
+  </div>
 
-  <h2>Who we are</h2>
+  <div class="summary">
+    <h2 id="short">The short version</h2>
+    <ul class="ticks">
+      <li>Your data stays in Google (Sheets and Drive) owned by the person who runs the tool. There's no other server or database.</li>
+      <li>Tools are only for people who've been invited. Nothing is sold, shared, used for advertising or used to train AI models.</li>
+      <li>This website uses no advertising cookies. It only counts visits with Google Analytics if you click <b>Accept</b>.</li>
+    </ul>
+  </div>
+
+  <nav class="toc" aria-label="On this page"><span>On this page</span><a href="#who">Who we are</a><a href="#site">This website</a><a href="#cookies">Cookies</a><a href="#feedback">Feedback app</a><a href="#questions">Contact form</a><a href="#activity">Activity log</a><a href="#access">Who can see it</a><a href="#keep">Keeping and removing</a><a href="#changes">Changes</a></nav>
+
+  <h2 id="who">Who we are</h2>
   <p>Nadav Automations makes small tools for a private team. This policy covers this website and every tool listed on it. Contact: <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
 
-  <h2>The short version</h2>
-  <ul>
-    <li>Your data stays in Google (Sheets and Drive) owned by the person who runs the tool. There's no other server or database.</li>
-    <li>Tools are only for people who've been invited. Nothing is sold, shared, used for advertising or used to train AI models.</li>
-    <li>This website uses no advertising cookies. It only counts visits with Google Analytics if you click <b>Accept</b>.</li>
-  </ul>
-
-  <h2>This website</h2>
+  <h2 id="site">This website</h2>
   <p>The site is hosted on GitHub Pages, which may keep standard technical logs (such as IP addresses) to run and protect its service – see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. The site sets no cookies unless you accept analytics cookies (see below).</p>
   <p>Some pages remember a few things in your own browser only (its "local storage"), so you don't have to sign in each time:</p>
   <ul>
@@ -41,12 +48,12 @@
   <p>The homepage and this page ask before using Google Analytics. If you click <b>Accept</b>, Google Analytics sets cookies (named <code>_ga</code> and <code>_ga_…</code>, kept for up to 2 years) to count visits and see which pages are used, roughly where visitors are (country or city) and what kind of device they use. Advertising features are switched off and the data isn't used to identify you. Google processes it under <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
   <p>If you click <b>Reject</b>, nothing is counted and no cookies are set. You can change your mind at any time with <b>Cookie settings</b> at the bottom of the page. The feedback app and Admin page never use Google Analytics.</p>
 
-  <h2>Feedback app</h2>
+  <h2 id="feedback">Feedback app</h2>
   <p>A tool a small team uses to log feedback on an order processing app. Entries, descriptions and team details are kept in the owner's Google spreadsheet; screenshots in a Google Drive folder the tool creates. Team members can view the spreadsheet and use the app with their personal link.</p>
 
   <h3>Google permissions the tool uses, and why</h3>
   <p>Only the spreadsheet's owner grants these – team members are never asked.</p>
-  <table>
+  <div class="tablewrap"><table>
     <tr><th>Permission</th><th>What the tool does with it</th></tr>
     <tr><td>View and manage the spreadsheet the tool is installed in</td><td>Reads and writes feedback entries and team details in the feedback spreadsheet only. It can't open any other spreadsheet.</td></tr>
     <tr><td>See, edit, create and delete only the specific Google Drive files you use with this app</td><td>Creates a Screenshots folder, saves screenshots in it, shows them in the app, and removes them when an entry is deleted. It can't see any other Drive files.</td></tr>
@@ -55,18 +62,18 @@
     <tr><td>Allow this application to run when you are not present</td><td>Sends the optional weekly summary.</td></tr>
     <tr><td>Display third-party web content in prompts and sidebars inside Google applications</td><td>Shows the owner's windows (email preview, team management) inside the spreadsheet.</td></tr>
     <tr><td>See your primary Google Account email address</td><td>Checks that the person using the owner's menu is the owner.</td></tr>
-  </table>
+  </table></div>
 
-  <h2 id="questions">Questions form</h2>
-  <p>The questions form on the homepage asks for your name, email address and question, and only uses them to reply to you. Your answers are sent to a Google Form. Answers are kept in the owner's Google spreadsheet and shown only to the owner. Google processes the form under <a href="https://policies.google.com/privacy">Google's privacy policy</a>. To have your question deleted, email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
+  <h2 id="questions">Contact form</h2>
+  <p>The contact form on the homepage asks for your name, email address, message and (if you choose one) what it's about, and only uses them to reply to you. Your answers are sent to a Google Form. Answers are kept in the owner's Google spreadsheet and shown only to the owner. Google processes the form under <a href="https://policies.google.com/privacy">Google's privacy policy</a>. To have your message deleted, email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
 
-  <h2>Activity log</h2>
+  <h2 id="activity">Activity log</h2>
   <p>To see how the tools are used, they note when someone opens a tool or adds, changes or views something: their name, what they did, the time, and the kind of device and browser (for example "Computer (Chrome)"). Failed sign-ins to the Admin page are noted too. These notes are kept in a separate Google spreadsheet that only the owner can see, on the owner-only Admin page. The latest 20,000 lines are kept; older ones are deleted automatically.</p>
 
-  <h2>Who can see your data</h2>
+  <h2 id="access">Who can see your data</h2>
   <p>Only the owner of each tool and the team members they've invited. The activity log and Admin page are for the owner only.</p>
 
-  <h2>How long it's kept, and how to remove it</h2>
+  <h2 id="keep">How long it's kept, and how to remove it</h2>
   <ul>
     <li>Entries and screenshots stay until they're deleted. Deleting an entry also moves its screenshots to the Google Drive bin.</li>
     <li>When someone is removed from a team, their access to the spreadsheet and their personal link are removed.</li>
@@ -74,10 +81,10 @@
     <li>If you've ever given a tool access to your Google Account, you can remove it at <a href="https://myaccount.google.com/connections">myaccount.google.com/connections</a>.</li>
   </ul>
 
-  <h2>Google API Services User Data Policy</h2>
+  <h2 id="google">Google API Services User Data Policy</h2>
   <p>The tools' use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 
-  <h2>Changes to this policy</h2>
+  <h2 id="changes">Changes to this policy</h2>
   <p>If this policy changes, the new version will be posted here with a new "last updated" date.</p>
 </main>
 
@@ -90,6 +97,7 @@
     <a class="right" href="admin/">Admin</a>
   </div>
 </footer>
+<script src="home.js?v=1"></script>
 <script src="analytics.js?v=7"></script>
 </body>
 </html>
