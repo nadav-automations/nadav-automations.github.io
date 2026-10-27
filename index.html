@@ -4,35 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="6dJ4R6VZz0ClGixeIQeOBkDsVTxw4LKhF4PVJl02Xss" />
-<title>AI Order Processing Feedback</title>
-<link rel="stylesheet" href="style.css">
+<meta name="description" content="Small automations and tools that save time on everyday work.">
+<title>Nadav Automations</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M9 22V10l7 8 7-8v12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-<main>
-  <header>
-    <h1>AI Order Processing Feedback</h1>
-    <p class="muted">A small internal feedback tool built on Google Sheets</p>
-    <nav><a href="index.html">Home</a><a href="privacy.html">Privacy policy</a></nav>
-  </header>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M9 22V10l7 8 7-8v12" fill="none" stroke="#535FC1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Nadav Automations</a>
+    <nav><a href="#tools">Tools</a><a href="privacy.html">Privacy</a><a href="#contact">Contact</a></nav>
+  </div>
+</header>
 
-  <h2>What it is</h2>
-  <p>AI Order Processing Feedback is a Google Sheets script used by a small private team to log feedback on an order processing app: bugs, AI errors, suggested improvements and feature requests.</p>
-  <p>It is not a public service. Only people the sheet's owner adds to the team can use it.</p>
+<main class="wrap">
+  <section class="hero">
+    <h1>Small automations that save time on everyday work.</h1>
+    <p>Simple tools built on Google Workspace – spreadsheets, forms and email – so routine jobs take minutes instead of hours.</p>
+  </section>
 
-  <h2>What it does</h2>
-  <ul>
-    <li>Gives each team member a personal link to a simple <a href="feedback/">feedback app</a> for adding entries, editing their own entries and attaching screenshots.</li>
-    <li>Saves everything in the feedback spreadsheet (which the team can view) and screenshots in a Google Drive folder the tool creates.</li>
-    <li>Adds an <b>Actions</b> menu for the sheet's owner to email lists of entries and summaries to the people they choose, including an optional weekly summary.</li>
+  <h2 id="tools">Tools</h2>
+  <div class="tools">
+    <!-- To add a tool: copy one <div class="tool">…</div> block and change the text and link. -->
+    <div class="tool">
+      <div class="icon">✎</div>
+      <span class="tag">For invited team members</span>
+      <h3>Feedback app</h3>
+      <p>Log bugs, AI errors and ideas for an order processing app, with screenshots, priorities and email summaries. Open it with your personal link.</p>
+      <a class="btn" href="feedback/">Open the feedback app</a>
+    </div>
+    <div class="tool soon">
+      <div class="icon">＋</div>
+      <h3>More tools on the way</h3>
+      <p>New automations will appear here as they're ready.</p>
+    </div>
+  </div>
+
+  <h2>How the tools work</h2>
+  <ul class="points">
+    <li><b>Your data stays in Google</b>Everything is saved in Google Sheets and Google Drive owned by the person who runs the tool. There's no separate server or database.</li>
+    <li><b>No sign-up</b>Team members open a tool with a personal link. Nobody else is asked for Google permissions.</li>
+    <li><b>Private by default</b>Tools are only for the people who've been invited. Data isn't sold, shared or used for advertising.</li>
   </ul>
 
-  <h2>Why it asks for permissions</h2>
-  <p>Only the sheet's owner ever grants permissions – team members just use their link. The tool can only see the feedback spreadsheet and the Google Drive files it created itself. The <a href="privacy.html">privacy policy</a> lists each permission and why it is needed.</p>
-
-  <h2>Contact</h2>
-  <p><a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a></p>
-
-  <footer class="muted"><a href="privacy.html">Privacy policy</a></footer>
+  <h2 id="contact">Contact</h2>
+  <p>Questions, or want something automated? Email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
 </main>
+
+<footer>
+  <div class="wrap">
+    <span>© Nadav Automations</span>
+    <a href="privacy.html">Privacy policy</a>
+    <a href="mailto:nadav.automations@gmail.com">Contact</a>
+    <a class="right" href="admin/">Admin</a>
+  </div>
+</footer>
 </body>
 </html>

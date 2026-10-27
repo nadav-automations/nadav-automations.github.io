@@ -3,57 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy Policy – AI Order Processing Feedback</title>
-<link rel="stylesheet" href="style.css">
+<title>Privacy policy – Nadav Automations</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M9 22V10l7 8 7-8v12%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-<main>
-  <header>
-    <h1>Privacy policy</h1>
-    <p class="muted">AI Order Processing Feedback · Last updated 27 October 2026</p>
-    <nav><a href="index.html">Home</a><a href="privacy.html">Privacy policy</a></nav>
-  </header>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M9 22V10l7 8 7-8v12" fill="none" stroke="#535FC1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Nadav Automations</a>
+    <nav><a href="./#tools">Tools</a><a href="privacy.html" class="on">Privacy</a><a href="./#contact">Contact</a></nav>
+  </div>
+</header>
+
+<main class="wrap page">
+  <h1>Privacy policy</h1>
+  <p class="muted">Last updated 27 October 2026</p>
 
   <h2>Who we are</h2>
-  <p>AI Order Processing Feedback ("the tool") is a Google Sheets script used by a small private team to log feedback on an order processing app. You can contact its developer at <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
+  <p>Nadav Automations makes small tools for private teams, built on Google Workspace. This policy covers this website and every tool listed on it. Contact: <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
 
-  <h2>What Google data the tool uses, and why</h2>
+  <h2>The short version</h2>
+  <ul>
+    <li>Your data stays in Google (Sheets and Drive) owned by the person who runs the tool. There's no other server or database.</li>
+    <li>Tools are only for people who've been invited. Nothing is sold, shared, used for advertising or used to train AI models.</li>
+    <li>This website doesn't use advertising or tracking cookies.</li>
+  </ul>
+
+  <h2>This website</h2>
+  <p>The site is hosted on GitHub Pages, which may keep standard technical logs (such as IP addresses) to run and protect its service – see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. The site itself sets no cookies.</p>
+  <p>Some pages remember a few things in your own browser only (its "local storage"), so you don't have to sign in each time:</p>
+  <ul>
+    <li><b>Feedback app:</b> your personal link, and a copy of the entry list so it opens quickly. Click <b>Forget me</b> in the app to remove them.</li>
+    <li><b>Admin page</b> (owner only): that you're signed in (for up to 30 days), and that this browser is trusted. Click <b>Sign out</b> to end the sign-in.</li>
+  </ul>
+
+  <h2>Feedback app</h2>
+  <p>A tool a small team uses to log feedback on an order processing app. Entries, descriptions and team details are kept in the owner's Google spreadsheet; screenshots in a Google Drive folder the tool creates. Team members can view the spreadsheet and use the app with their personal link.</p>
+
+  <h3>Google permissions the tool uses, and why</h3>
+  <p>Only the spreadsheet's owner grants these – team members are never asked.</p>
   <table>
     <tr><th>Permission</th><th>What the tool does with it</th></tr>
-    <tr><td>View and manage the spreadsheet the tool is installed in</td><td>Reads and writes feedback entries and team details in the feedback spreadsheet only. It cannot open any other spreadsheet.</td></tr>
-    <tr><td>See, edit, create and delete only the specific Google Drive files you use with this app</td><td>Creates a Screenshots folder, saves screenshots in it, shows them in the feedback app, and removes them when an entry is deleted. It cannot see any other files in your Drive.</td></tr>
-    <tr><td>Connect to an external service</td><td>Used only to download screenshots from Google Drive (Google's own Drive API), so they can be shown in the feedback app. No other service is contacted.</td></tr>
-    <tr><td>Send email as you</td><td>Sends feedback lists, summaries, welcome messages and personal links, only to the addresses the owner types in or the team members' contact addresses.</td></tr>
+    <tr><td>View and manage the spreadsheet the tool is installed in</td><td>Reads and writes feedback entries and team details in the feedback spreadsheet only. It can't open any other spreadsheet.</td></tr>
+    <tr><td>See, edit, create and delete only the specific Google Drive files you use with this app</td><td>Creates a Screenshots folder, saves screenshots in it, shows them in the app, and removes them when an entry is deleted. It can't see any other Drive files.</td></tr>
+    <tr><td>Connect to an external service</td><td>Only used to fetch screenshots from Google Drive (Google's own Drive API) so the app can show them.</td></tr>
+    <tr><td>Send email as you</td><td>Sends feedback lists, summaries, welcome messages and personal links, only to addresses the owner types in or to team members.</td></tr>
     <tr><td>Allow this application to run when you are not present</td><td>Sends the optional weekly summary.</td></tr>
-    <tr><td>Display and run third-party web content in prompts and sidebars inside Google applications</td><td>Shows the owner's pop-up windows (email preview, team management) inside the spreadsheet.</td></tr>
-    <tr><td>See your primary Google Account email address</td><td>Checks that the person using the Actions menu is the sheet's owner.</td></tr>
+    <tr><td>Display third-party web content in prompts and sidebars inside Google applications</td><td>Shows the owner's windows (email preview, team management) inside the spreadsheet.</td></tr>
+    <tr><td>See your primary Google Account email address</td><td>Checks that the person using the owner's menu is the owner.</td></tr>
   </table>
 
-  <h2>Where the data is kept</h2>
-  <p>Everything stays in Google: in the feedback spreadsheet and in the Drive folder the tool creates, both owned by the sheet's owner. Team members can view the spreadsheet, and see screenshots through the feedback app. The tool has no server or database of its own and keeps no copy of your data anywhere else.</p>
-  <p>The feedback app's pages remember your personal link, and a copy of the entry list so they open quickly, in your own browser only. Click <b>Forget me</b> in the app to remove them.</p>
-
   <h2>Activity log</h2>
-  <p>To see how the feedback app is used, the app notes when someone opens it or adds, changes or views an entry: their name, what they did, the time, and the kind of device and browser (for example "Computer (Chrome)"). These notes are kept in a separate spreadsheet that only the owner can see. It keeps the latest 20,000 lines and older ones are deleted automatically.</p>
+  <p>To see how the tools are used, they note when someone opens a tool or adds, changes or views something: their name, what they did, the time, and the kind of device and browser (for example "Computer (Chrome)"). Failed sign-ins to the Admin page are noted too. These notes are kept in a separate Google spreadsheet that only the owner can see, on the owner-only Admin page. The latest 20,000 lines are kept; older ones are deleted automatically.</p>
 
-  <h2>Who can see it</h2>
-  <p>Only the members of the feedback team the sheet's owner has added. The tool does not sell, rent or share any data with anyone else, does not use it for advertising, and does not use it to train AI models.</p>
+  <h2>Who can see your data</h2>
+  <p>Only the owner of each tool and the team members they've invited. The activity log and Admin page are for the owner only.</p>
 
-  <h2>How long it is kept, and how to remove it</h2>
+  <h2>How long it's kept, and how to remove it</h2>
   <ul>
-    <li>Entries and screenshots stay in the spreadsheet and its Drive folder until they are deleted. Deleting an entry through the tool also moves the screenshot file to the Google Drive bin.</li>
-    <li>When someone is removed from the team, their access to the spreadsheet and their personal link are removed too.</li>
-    <li>You can withdraw the tool's access to your Google Account at any time at <a href="https://myaccount.google.com/connections">myaccount.google.com/connections</a>.</li>
-    <li>To ask for your entries or screenshots to be deleted, email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</li>
+    <li>Entries and screenshots stay until they're deleted. Deleting an entry also moves its screenshots to the Google Drive bin.</li>
+    <li>When someone is removed from a team, their access to the spreadsheet and their personal link are removed.</li>
+    <li>To ask for your data to be deleted, email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</li>
+    <li>If you've ever given a tool access to your Google Account, you can remove it at <a href="https://myaccount.google.com/connections">myaccount.google.com/connections</a>.</li>
   </ul>
 
   <h2>Google API Services User Data Policy</h2>
-  <p>AI Order Processing Feedback's use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+  <p>The tools' use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 
   <h2>Changes to this policy</h2>
-  <p>If this policy changes, the new version will be posted on this page with a new "last updated" date.</p>
-
-  <footer class="muted"><a href="index.html">Home</a></footer>
+  <p>If this policy changes, the new version will be posted here with a new "last updated" date.</p>
 </main>
+
+<footer>
+  <div class="wrap">
+    <span>© Nadav Automations</span>
+    <a href="./">Home</a>
+    <a href="mailto:nadav.automations@gmail.com">Contact</a>
+    <a class="right" href="admin/">Admin</a>
+  </div>
+</footer>
 </body>
 </html>

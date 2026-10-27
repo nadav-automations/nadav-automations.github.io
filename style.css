@@ -1,15 +1,58 @@
-:root { --fg:#1E2523; --muted:#5E6966; --line:#DDE2DF; --accent:#535FC1; --bg:#F7F8F6; --card:#FFFFFF; }
+/* Nadav Automations – site pages (homepage and privacy policy) */
+:root { --fg:#1f2430; --muted:#6b7080; --line:#dde0ea; --accent:#535FC1; --accent-dark:#3f4aa6; --lilac:#EEEFFB; --bg:#f6f7fb; --card:#fff; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 Arial, Helvetica, sans-serif; }
-main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
-header { border-bottom: 3px solid var(--accent); padding-bottom: 16px; margin-bottom: 24px; }
-h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 8px; }
-h2 { font-size: 1.2rem; margin: 32px 0 8px; color: var(--accent); }
+a { color: var(--accent); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+/* Top bar (same look as the apps) */
+.top { background: var(--accent); }
+.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 56px; flex-wrap: wrap; }
+.brand { color: #fff; font-weight: bold; text-decoration: none; font-size: 1.05rem; display: flex; align-items: center; gap: 9px; }
+.brand svg { flex: none; }
+.top nav { display: flex; gap: 2px; margin-left: auto; }
+.top nav a { color: #fff; text-decoration: none; padding: 7px 11px; border-radius: 6px; font-size: .93rem; }
+.top nav a:hover, .top nav a.on { background: rgba(255,255,255,.18); }
+
+/* Homepage */
+.hero { padding: 56px 0 28px; }
+.hero h1 { font-size: 2.3rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -.01em; }
+.hero p { font-size: 1.15rem; color: var(--muted); max-width: 620px; margin: 0; }
+h2 { font-size: 1.25rem; margin: 36px 0 14px; }
+.tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.tool { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
+.tool h3 { margin: 0 0 6px; font-size: 1.1rem; }
+.tool p { margin: 0 0 16px; color: var(--muted); font-size: .95rem; flex: 1; }
+.tool .icon { width: 40px; height: 40px; border-radius: 10px; background: var(--lilac); color: var(--accent); display: grid; place-items: center; font-size: 1.3rem; margin-bottom: 12px; }
+.tag { display: inline-block; font-size: .75rem; padding: 2px 9px; border-radius: 10px; background: var(--lilac); color: var(--accent-dark); margin-bottom: 10px; align-self: flex-start; }
+.btn { display: inline-block; background: var(--accent); color: #fff !important; text-decoration: none; font-weight: bold; padding: 9px 18px; border-radius: 7px; font-size: .95rem; align-self: flex-start; }
+.btn:hover { background: var(--accent-dark); }
+.tool.soon { border-style: dashed; background: transparent; }
+.tool.soon .icon { background: #eceef3; color: var(--muted); }
+.points { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.points li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; font-size: .95rem; }
+.points b { display: block; margin-bottom: 4px; }
+
+/* Text pages (privacy policy) */
+.page { max-width: 780px; padding-top: 36px; padding-bottom: 20px; }
+.page h1 { font-size: 1.9rem; margin: 0 0 6px; }
+.page h2 { color: var(--accent); margin-top: 32px; }
+.page h3 { font-size: 1.02rem; margin: 22px 0 6px; }
 p, li { margin: 0 0 10px; }
 .muted { color: var(--muted); font-size: .92rem; }
-table { width: 100%; border-collapse: collapse; background: var(--card); margin: 8px 0 16px; font-size: .95rem; }
+table { width: 100%; border-collapse: collapse; background: var(--card); margin: 8px 0 16px; font-size: .93rem; }
 th, td { text-align: left; vertical-align: top; padding: 10px 12px; border: 1px solid var(--line); }
-th { background: #EEEFFB; }
-a { color: var(--accent); }
-nav a { margin-right: 16px; }
-footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 16px; }
+th { background: var(--lilac); }
+
+footer { margin-top: 56px; border-top: 1px solid var(--line); padding: 18px 0 40px; font-size: .9rem; color: var(--muted); }
+footer .wrap { display: flex; gap: 18px; flex-wrap: wrap; }
+footer a { color: var(--muted); }
+footer .right { margin-left: auto; }
+
+@media (max-width: 600px) {
+  .hero { padding: 36px 0 18px; }
+  .hero h1 { font-size: 1.8rem; }
+  .top .wrap { padding-top: 10px; padding-bottom: 4px; gap: 4px 20px; }
+  .top nav { margin-left: -11px; flex-basis: 100%; }
+  footer .right { margin-left: 0; }
+}
