@@ -53,12 +53,15 @@
     const body = new URLSearchParams();
     body.set(FIELDS.name, f.elements.name.value.trim());
     body.set(FIELDS.email, f.elements.email.value.trim());
-    body.set(FIELDS.question, f.elements.question.value.trim());
+    const topic = f.dataset.topic || '';                // chosen with the "What's it about?" buttons
+    body.set(FIELDS.question, (topic ? `[${topic}] ` : '') + f.elements.question.value.trim());
     $('qSend').disabled = true; msg('Sending…');
     try {
       // Google Forms doesn't send a readable reply to other websites, so a sent request counts as success
       await fetch(FORM + '/formResponse', { method: 'POST', mode: 'no-cors', body });
       f.reset();
+      delete f.dataset.topic;
+      f.querySelectorAll('[data-topic]').forEach(x => x.setAttribute('aria-checked', 'false'));
       msg('Thanks – your message has been sent. You\'ll get a reply by email.', 'ok');
     } catch (err) {
       msg('Sorry, that didn\'t send. Please check your connection, or email instead.', 'bad');

@@ -6,73 +6,138 @@
 <meta name="google-site-verification" content="6dJ4R6VZz0ClGixeIQeOBkDsVTxw4LKhF4PVJl02Xss" />
 <meta name="description" content="Simple tools and small automations for our team.">
 <title>Nadav Automations</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M10 22V10l12 12V10%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23535FC1%22%2F%3E%3Cpath%20d%3D%22M11%2023.5V10l10%2013%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M21%2023V9.5%22%20fill%3D%22none%22%20stroke%3D%22%23f2b84b%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2221%22%20cy%3D%229.5%22%20r%3D%222.6%22%20fill%3D%22%23f2b84b%22%2F%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="home.css?v=1">
 </head>
 <body>
-<header class="top">
+<header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="./"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M10 22V10l12 12V10" fill="none" stroke="#535FC1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Nadav Automations</a>
-    <nav aria-label="Sections"><a href="#tools">Tools</a><a href="#data">Your data</a><a href="#contact">Contact</a></nav>
+    <a class="brand" href="./"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M11 23.5V10l10 13" fill="none" stroke="#535FC1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 23V9.5" fill="none" stroke="#E9A92F" stroke-width="2.6" stroke-linecap="round"/><circle cx="21" cy="9.5" r="2.6" fill="#E9A92F"/></svg> Nadav Automations</a>
+    <nav aria-label="Sections"><a href="#tools">Tools</a><a href="#data">How it works</a><a href="#contact">Contact</a></nav>
   </div>
 </header>
 
-<main class="wrap">
-  <section class="hero">
-    <h1>Simple tools for our team.</h1>
-    <p>Small automations that take the repetitive parts out of everyday work, so jobs take minutes instead of hours.</p>
-    <p class="hnote">These tools are just for our team – you'll open them with your personal link. Just visiting? You're welcome to <a href="#contact">get in touch</a>.</p>
-  </section>
-
-  <h2 id="tools">Tools</h2>
-  <div class="tools">
-    <!-- To add a tool: copy one <div class="tool">…</div> block and change the text and link. -->
-    <div class="tool">
-      <div class="icon">✎</div>
-      <span class="tag">For invited team members</span>
-      <h3>Feedback app</h3>
-      <p>Log bugs, AI errors and ideas for an order processing app, with screenshots, priorities and email summaries. Open it with your personal link.</p>
-      <a class="btn" href="feedback/">Open the feedback app</a>
+<section class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="wrap herogrid">
+    <div class="herotext">
+      <span class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg> Built for our team</span>
+      <h1><span class="grad">Simple</span> tools for <span style="white-space:nowrap">our team.</span></h1>
+      <p class="lede">Small automations that take the repetitive parts out of everyday work, so jobs take minutes instead of hours.</p>
+      <div class="ctas"><a class="btn big" href="#tools">See the tools <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn ghost big" href="#contact" data-topic="Idea for a new tool">Suggest an idea</a></div>
+      <p class="hnote">These tools are just for our team – you'll open them with your personal link. Just visiting? You're welcome to <a href="#contact">get in touch</a>.</p>
     </div>
-    <div class="tool soon">
-      <div class="icon">＋</div>
-      <h3>More tools on the way</h3>
-      <p>New automations will appear here as they're ready.</p>
+    <div class="heroart" aria-hidden="true">
+      <svg viewBox="0 0 420 340" class="flow">
+        <defs>
+          <linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#535FC1"/><stop offset="1" stop-color="#f2b84b"/></linearGradient>
+          <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1d2233" flood-opacity=".14"/></filter>
+        </defs>
+        <path id="p1" class="wire" d="M120 92 C 200 92, 200 170, 262 170"/>
+        <path id="p2" class="wire" d="M120 250 C 200 250, 200 170, 262 170"/>
+        <circle r="5" fill="#f2b84b"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+        <circle r="5" fill="#535FC1" opacity="0"><set attributeName="opacity" to="1" begin="1.6s"/><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+        <g filter="url(#sh)">
+          <g class="node n1" transform="translate(20 52)"><rect width="100" height="80" rx="16" fill="#fff"/><rect x="16" y="16" width="30" height="30" rx="8" fill="#EEEFFB"/><path d="M24 39h14M24 31h14M24 23h14" stroke="#535FC1" stroke-width="2.4" stroke-linecap="round"/><rect x="16" y="54" width="68" height="7" rx="3.5" fill="#e6e8f2"/><rect x="54" y="20" width="30" height="7" rx="3.5" fill="#e6e8f2"/><rect x="54" y="33" width="20" height="7" rx="3.5" fill="#f6dfb0"/></g>
+          <g class="node n2" transform="translate(20 210)"><rect width="100" height="80" rx="16" fill="#fff"/><rect x="16" y="16" width="30" height="30" rx="8" fill="#fdf1d8"/><path d="M22 25l9 7 9-7M22 25h18v14H22z" fill="none" stroke="#d99a21" stroke-width="2.2" stroke-linejoin="round"/><rect x="16" y="54" width="68" height="7" rx="3.5" fill="#e6e8f2"/><rect x="54" y="20" width="30" height="7" rx="3.5" fill="#e6e8f2"/><rect x="54" y="33" width="22" height="7" rx="3.5" fill="#d9dcf6"/></g>
+          <g class="node n3" transform="translate(262 110)"><rect width="140" height="120" rx="20" fill="#fff"/><rect x="18" y="18" width="104" height="10" rx="5" fill="#535FC1"/><rect x="18" y="40" width="70" height="8" rx="4" fill="#e6e8f2"/><rect x="96" y="40" width="26" height="8" rx="4" fill="#F4D3E6"/><rect x="18" y="58" width="60" height="8" rx="4" fill="#e6e8f2"/><rect x="96" y="58" width="26" height="8" rx="4" fill="#FFF2CC"/><rect x="18" y="76" width="74" height="8" rx="4" fill="#e6e8f2"/><rect x="96" y="76" width="26" height="8" rx="4" fill="#D9EAD3"/><circle cx="114" cy="102" r="7" fill="#f2b84b"/><path d="M111 102l2 2 4-4" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>
+        </g>
+      </svg>
     </div>
   </div>
+</section>
 
-  <h2 id="data">How the tools work, and what happens to your data</h2>
-  <ul class="points">
-    <li><b>No sign-up, no passwords</b>You open a tool with your own personal link. There are no accounts to create and nothing to remember.</li>
-    <li><b>Your link is your key</b>Each link holds a private key that's unique to you, so the tool knows who you are. Please keep it to yourself – if it's ever shared, it can be replaced.</li>
-    <li><b>No company data on this website</b>This website only holds the pages you see. Entries, screenshots and team details are never stored here.</li>
-    <li><b>Where your data goes</b>When you save something, it goes over a secure (encrypted) connection straight to the tool's private spreadsheet and file storage in the owner's Google account.</li>
-    <li><b>Who can see it</b>Only the owner and the team members invited to that tool. Each tool also notes who did what and when, which only the owner can see.</li>
-    <li><b>Never sold or shared</b>Nothing is sold, shared with anyone else, used for advertising or used to train AI. To have your data deleted, just ask.</li>
-  </ul>
-  <p class="muted">The tools don't use cookies. This homepage only counts visits if you accept cookies. Full details are in the <a href="privacy.html">privacy policy</a>.</p>
+<main class="wrap">
+  <section id="tools" class="sec">
+    <div class="sechead reveal"><span class="kicker">Tools</span><h2>What's ready to use</h2></div>
+    <div class="toolrow">
+      <!-- To add a tool: copy this <article class="tool">…</article> block and change the text and link. -->
+      <article class="tool reveal">
+        <div class="ticon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></div>
+        <span class="tag">For invited team members</span>
+        <h3>Feedback app</h3>
+        <p>Log bugs, AI errors and ideas for an order processing app, with screenshots, priorities and email summaries. Open it with your personal link.</p>
+        <a class="btn" href="feedback/">Open the feedback app <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+      <div class="carousel reveal" id="car" aria-roledescription="carousel" aria-label="Inside the feedback app">
+        <div class="slides">
+          <figure class="slide on">
+            <div class="mock form"><div class="mbar"><i></i><i></i><i></i></div><div class="mrow"><b>Headline</b><span class="mfield typed">Wrong quantity on order #23</span></div><div class="mrow two"><div><b>Type</b><span class="chip c-ai">AI Error</span></div><div><b>Severity</b><span class="chip c-maj">Major</span></div></div><div class="mbtn">Save entry</div></div>
+            <figcaption><b>Log it in seconds</b>Spot a problem, add a headline and a few details – done.</figcaption>
+          </figure>
+          <figure class="slide">
+            <div class="mock shots"><div class="mbar"><i></i><i></i><i></i></div><div class="thumbs"><span></span><span></span><span></span><span class="add">＋</span></div></div>
+            <figcaption><b>Add screenshots</b>Drop in screenshots so everyone can see exactly what happened.</figcaption>
+          </figure>
+          <figure class="slide">
+            <div class="mock list"><div class="mbar"><i></i><i></i><i></i></div><div class="lrow"><span class="id">001</span><span class="ln"></span><span class="chip c-cri">High</span></div><div class="lrow"><span class="id">002</span><span class="ln s"></span><span class="chip c-maj">Medium</span></div><div class="lrow"><span class="id">003</span><span class="ln m"></span><span class="chip c-min">Low</span></div></div>
+            <figcaption><b>Priorities at a glance</b>Severity and frequency set the priority, so the big issues rise to the top.</figcaption>
+          </figure>
+          <figure class="slide">
+            <div class="mock mail"><div class="mbar"><i></i><i></i><i></i></div><div class="env"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><div><b>Weekly summary</b><span class="ln"></span><span class="ln s"></span></div></div><div class="tiles"><span><b>12</b>new</span><span><b>3</b>high</span><span><b>5</b>fixed</span></div></div>
+            <figcaption><b>Summaries by email</b>Round-ups land in your inbox, so nothing gets missed.</figcaption>
+          </figure>
+        </div>
+        <div class="cnav"><button type="button" class="carr prev" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots"></div><button type="button" class="carr next" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
+      </div>
+    </div>
+    <a class="soonbar reveal" href="#contact" data-topic="Idea for a new tool"><span class="ticon sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span><span><b>More tools on the way.</b> Got a job that eats up your time? Suggest an automation</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </section>
 
-  <h2 id="contact">Questions, feedback or ideas?</h2>
-  <p><b>Team members:</b> if you have a question, feedback or a suggestion – about one of the current tools, or an idea for a new automation – please send it here. Every message is read.</p>
-  <p>Not on the team? You're welcome to get in touch too, or email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
-  <form class="qform" id="qform" novalidate>
-    <div class="field">
-      <label for="qName">Name</label>
-      <input id="qName" name="name" type="text" autocomplete="name" required>
+  <section id="data" class="sec">
+    <div class="sechead reveal"><span class="kicker">How it works</span><h2>Where your data goes – and where it doesn't</h2></div>
+    <ol class="journey">
+      <li class="reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2.5 2.5M14 9l2 2"/></svg></span><b>Your link is your key</b>You open a tool with your own personal link. It holds a private key unique to you, so the tool knows who you are. Keep it to yourself – it can be replaced if it's ever shared.</li>
+      <li class="reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/></svg></span><b>Sent securely</b>When you save something, it travels over an encrypted connection – straight past this website, which never stores it.</li>
+      <li class="reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M4 9h16M4 14.5h16M10 9v11.5"/></svg></span><b>Kept privately</b>It's saved in the tool's private spreadsheet and file storage in the owner's Google account.</li>
+      <li class="reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><circle cx="16.5" cy="10" r="2.4"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><path d="M14.8 15c2.7-.5 4.9.8 5.7 3.6"/></svg></span><b>Seen by the team only</b>Only the owner and the team members invited to that tool can see it. Each tool also notes who did what and when, which only the owner can see.</li>
+    </ol>
+    <div class="promises">
+      <div class="promise reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1-3.6 3.7-5.5 7-5.5s6 1.9 7 5.5"/><path d="M4 4l16 16"/></svg></span><div><b>No sign-up, no passwords</b>No accounts to create and nothing to remember.</div></div>
+      <div class="promise reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.3 3.8 5.2 3.8 8.5S14.6 18.2 12 20.5C9.4 18.2 8.2 15.3 8.2 12S9.4 5.8 12 3.5z"/></svg></span><div><b>No company data on this website</b>It only holds the pages you see. Entries, screenshots and team details are never stored here.</div></div>
+      <div class="promise reveal"><span class="jicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5.5c0 4.4 3 8 7 9.5 4-1.5 7-5.1 7-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg></span><div><b>Never sold or shared</b>Not sold, shared, used for advertising or used to train AI. To have your data deleted, just ask.</div></div>
     </div>
-    <div class="field">
-      <label for="qEmail">Email</label>
-      <input id="qEmail" name="email" type="email" maxlength="200" autocomplete="email" required>
-      <small>So I can reply. It's never shared.</small>
+    <p class="muted reveal">The tools don't use cookies. This homepage only counts visits if you accept cookies. Full details are in the <a href="privacy.html">privacy policy</a>.</p>
+  </section>
+
+  <section id="contact" class="sec">
+    <div class="contactgrid">
+      <div class="contactintro reveal">
+        <span class="kicker">Contact</span>
+        <h2>Questions, feedback or ideas?</h2>
+        <p><b>Team members:</b> if you have a question, feedback or a suggestion – about one of the current tools, or an idea for a new automation – please send it here. Every message is read.</p>
+        <p>Not on the team? You're welcome to get in touch too, or email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
+      </div>
+      <form class="qform reveal" id="qform" novalidate>
+        <div class="field">
+          <span class="flabel" id="topicLbl">What's it about?</span>
+          <div class="topics" role="radiogroup" aria-labelledby="topicLbl">
+            <button type="button" role="radio" aria-checked="false" data-topic="Question">Question</button>
+            <button type="button" role="radio" aria-checked="false" data-topic="Feedback on a tool">Feedback on a tool</button>
+            <button type="button" role="radio" aria-checked="false" data-topic="Idea for a new tool">Idea for a new tool</button>
+            <button type="button" role="radio" aria-checked="false" data-topic="Something else">Something else</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="qName">Name</label>
+          <input id="qName" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="qEmail">Email</label>
+          <input id="qEmail" name="email" type="email" maxlength="200" autocomplete="email" required>
+          <small>So I can reply. It's never shared.</small>
+        </div>
+        <div class="field">
+          <label for="qText">Your message</label>
+          <textarea id="qText" name="question" rows="5" required></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="qbar"><button type="submit" class="btn" id="qSend">Send message <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><span id="qMsg" class="qmsg" role="status"></span></div>
+        <p class="muted">Your answers are only seen by the site's owner – see the <a href="privacy.html#questions">privacy policy</a>.</p>
+      </form>
     </div>
-    <div class="field">
-      <label for="qText">Your message</label>
-      <textarea id="qText" name="question" rows="5" required></textarea>
-    </div>
-    <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
-    <div class="qbar"><button type="submit" class="btn" id="qSend">Send message</button><span id="qMsg" class="qmsg" role="status"></span></div>
-  </form>
-  <p class="muted">Your answers are only seen by the site's owner – see the <a href="privacy.html#questions">privacy policy</a>.</p>
+  </section>
 </main>
 
 <footer>
@@ -84,7 +149,8 @@
     <a class="right" href="admin/">Admin</a>
   </div>
 </footer>
-<script src="site.js?v=3"></script>
+<script src="site.js?v=4"></script>
+<script src="home.js?v=1"></script>
 <script src="analytics.js?v=7"></script>
 </body>
 </html>

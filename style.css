@@ -1,18 +1,23 @@
 /* Nadav Automations – site pages (homepage and privacy policy) */
 :root { --fg:#1f2430; --muted:#6b7080; --line:#dde0ea; --accent:#535FC1; --accent-dark:#3f4aa6; --lilac:#EEEFFB; --bg:#f6f7fb; --card:#fff; }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 Arial, Helvetica, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
 a { color: var(--accent); }
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
 
-/* Top bar (same look as the apps) */
-.top { background: var(--accent); }
-.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 56px; flex-wrap: wrap; }
-.brand { color: #fff; font-weight: bold; text-decoration: none; font-size: 1.05rem; display: flex; align-items: center; gap: 9px; }
-.brand svg { flex: none; }
-.top nav { display: flex; gap: 2px; margin-left: auto; }
-.top nav a { color: #fff; text-decoration: none; padding: 7px 11px; border-radius: 6px; font-size: .93rem; }
-.top nav a:hover, .top nav a.on { background: rgba(255,255,255,.18); }
+/* Top bar: soft gradient, sticks to the top and turns to frosted glass when you scroll */
+.top { position: sticky; top: 0; z-index: 40; background: linear-gradient(115deg, #3f49ad 0%, #535FC1 45%, #6c63d4 100%); box-shadow: 0 1px 0 rgba(255,255,255,.08) inset; transition: background .3s, box-shadow .3s; }
+.top::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(242,184,75,.9) 30%, rgba(242,184,75,.9) 70%, transparent); opacity: .55; }
+.top.scrolled { background: rgba(70,80,180,.86); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 8px 30px rgba(29,34,51,.18); }
+.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 60px; flex-wrap: wrap; }
+.brand { color: #fff; font-weight: bold; text-decoration: none; font-size: 1.08rem; display: flex; align-items: center; gap: 10px; letter-spacing: -.01em; }
+.brand svg { flex: none; transition: transform .35s cubic-bezier(.3,1.6,.5,1); filter: drop-shadow(0 3px 8px rgba(0,0,0,.18)); }
+.brand:hover svg { transform: rotate(-8deg) scale(1.06); }
+.top nav { display: flex; gap: 4px; margin-left: auto; }
+.top nav a { position: relative; color: rgba(255,255,255,.88); text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: .94rem; transition: color .2s, background .2s; }
+.top nav a::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px; border-radius: 2px; background: #f2b84b; transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+.top nav a:hover, .top nav a.on { color: #fff; background: rgba(255,255,255,.1); }
+.top nav a:hover::after, .top nav a.on::after { transform: scaleX(1); }
 
 /* Homepage */
 .hero { padding: 56px 0 28px; }
