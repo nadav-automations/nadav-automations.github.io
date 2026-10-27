@@ -98,3 +98,12 @@ footer .right { margin-left: auto; }
 .cookiebar .cyes:hover { background: var(--accent-dark); }
 .cookiebar .cno { background: #fff; color: var(--accent); }
 .cookiebar .cno:hover { background: var(--lilac); }
+
+.hero .hnote { font-size: .98rem; margin-top: 14px; color: var(--muted); }
+.points li { margin: 0; }
+.points + .muted { margin-top: 12px; }
+
+/* Section links in the header */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+h2[id] { scroll-margin-top: 16px; }

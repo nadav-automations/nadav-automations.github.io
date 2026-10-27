@@ -189,8 +189,8 @@
     const paint = html => { if (n === RENDER) app.innerHTML = html; return n === RENDER; };
     document.title = 'Feedback app';
     try {
-      if (p === 'help') return await pageHelp(paint);
-      if (!KEY) return pageKey(paint);
+      if (!KEY) return pageKey(paint);                  // Help and everything else need a personal link
+      if (p === 'help') { if (BOOT) paintTop(); else load().catch(err => { if (err.badKey) pageKey(paint, err.message); }); return await pageHelp(paint); }
       if (!BOOT || (p === 'edit' && !FRESH)) { paint('<p class="loading">Loading…</p>'); await load(); }
       else if (!FRESH) load().then(() => { if (n === RENDER && !DIRTY && ['list', 'view'].includes(route().p)) render(); }).catch(err => { if (err.badKey) pageKey(paint, err.message); });
       paintTop();
@@ -223,8 +223,7 @@
         <p>Enter your email address and your link will be emailed to you again (only to the address on the list).</p>
         <div class="row"><input type="email" id="lostEmail" placeholder="you@example.com" style="flex:1;min-width:220px;"><button id="lost">Email me my link</button></div>
         <p id="lostMsg" class="muted" style="margin-top:8px;"></p>
-      </div>
-      <p class="muted">${link('help', 0, 'How the feedback app works')}</p>`);
+      </div>`);
     $('#usePaste').onclick = () => {
       const m = /k=([a-f0-9]{40})/.exec($('#paste').value) || /^\s*([a-f0-9]{40})\s*$/.exec($('#paste').value);
       if (!m) { $('#pasteMsg').textContent = 'That doesn\'t look like a personal link. Copy the whole link from your email.'; return; }

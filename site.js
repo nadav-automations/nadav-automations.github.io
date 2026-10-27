@@ -10,7 +10,7 @@
   const $ = id => document.getElementById(id);
   const msg = (text, cls) => { $('qMsg').textContent = text; $('qMsg').className = 'qmsg ' + (cls || ''); };
   // A small warning pops up under a box as soon as it's too long (nothing is cut off)
-  const LIMITS = { qName: [80, 'Names can be up to 80 characters.'], qText: [2000, 'Please keep your question under 2000 characters – you can email more details.'] };
+  const LIMITS = { qName: [80, 'Names can be up to 80 characters.'], qText: [2000, 'Please keep your message under 2000 characters – you can email more details.'] };
   Object.keys(LIMITS).forEach(id => {
     const el = $(id), [max, text] = LIMITS[id], field = el.closest('.field');
     const tip = document.createElement('div');
@@ -29,7 +29,7 @@
     const rules = [
       ['qName', v => v.trim().length > 0 && v.length <= 80, 'Please enter your name (up to 80 characters).'],
       ['qEmail', v => /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v.trim()), 'Please enter a valid email address, e.g. name@example.com.'],
-      ['qText', v => v.trim().length > 0 && v.length <= 2000, 'Please write your question (up to 2000 characters).']
+      ['qText', v => v.trim().length > 0 && v.length <= 2000, 'Please write your message (up to 2000 characters).']
     ];
     let first = null;
     rules.forEach(([id, ok, text]) => {
@@ -59,7 +59,7 @@
       // Google Forms doesn't send a readable reply to other websites, so a sent request counts as success
       await fetch(FORM + '/formResponse', { method: 'POST', mode: 'no-cors', body });
       f.reset();
-      msg('Thanks – your question has been sent. You\'ll get a reply by email.', 'ok');
+      msg('Thanks – your message has been sent. You\'ll get a reply by email.', 'ok');
     } catch (err) {
       msg('Sorry, that didn\'t send. Please check your connection, or email instead.', 'bad');
     }

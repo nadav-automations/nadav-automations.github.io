@@ -4,22 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="6dJ4R6VZz0ClGixeIQeOBkDsVTxw4LKhF4PVJl02Xss" />
-<meta name="description" content="Small automations and tools that save time on everyday work.">
+<meta name="description" content="Simple tools and small automations for our team.">
 <title>Nadav Automations</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M10 22V10l12 12V10%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 <header class="top">
   <div class="wrap">
     <a class="brand" href="./"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M10 22V10l12 12V10" fill="none" stroke="#535FC1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Nadav Automations</a>
+    <nav aria-label="Sections"><a href="#tools">Tools</a><a href="#data">Your data</a><a href="#contact">Contact</a></nav>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero">
-    <h1>Small automations that save time on everyday work.</h1>
-    <p>Simple tools built on Google Workspace – spreadsheets, forms and email – so routine jobs take minutes instead of hours.</p>
+    <h1>Simple tools for our team.</h1>
+    <p>Small automations that take the repetitive parts out of everyday work, so jobs take minutes instead of hours.</p>
+    <p class="hnote">These tools are just for our team – you'll open them with your personal link. Just visiting? You're welcome to <a href="#contact">get in touch</a>.</p>
   </section>
 
   <h2 id="tools">Tools</h2>
@@ -39,15 +41,20 @@
     </div>
   </div>
 
-  <h2>How the tools work</h2>
+  <h2 id="data">How the tools work, and what happens to your data</h2>
   <ul class="points">
-    <li><b>Your data stays in Google</b>Everything is saved in Google Sheets and Google Drive owned by the person who runs the tool. There's no separate server or database.</li>
-    <li><b>No sign-up</b>Team members open a tool with a personal link. Nobody else is asked for Google permissions.</li>
-    <li><b>Private by default</b>Tools are only for the people who've been invited. Data isn't sold, shared or used for advertising.</li>
+    <li><b>No sign-up, no passwords</b>You open a tool with your own personal link. There are no accounts to create and nothing to remember.</li>
+    <li><b>Your link is your key</b>Each link holds a private key that's unique to you, so the tool knows who you are. Please keep it to yourself – if it's ever shared, it can be replaced.</li>
+    <li><b>No company data on this website</b>This website only holds the pages you see. Entries, screenshots and team details are never stored here.</li>
+    <li><b>Where your data goes</b>When you save something, it goes over a secure (encrypted) connection straight to the tool's private spreadsheet and file storage in the owner's Google account.</li>
+    <li><b>Who can see it</b>Only the owner and the team members invited to that tool. Each tool also notes who did what and when, which only the owner can see.</li>
+    <li><b>Never sold or shared</b>Nothing is sold, shared with anyone else, used for advertising or used to train AI. To have your data deleted, just ask.</li>
   </ul>
+  <p class="muted">The tools don't use cookies. This homepage only counts visits if you accept cookies. Full details are in the <a href="privacy.html">privacy policy</a>.</p>
 
-  <h2 id="contact">Questions?</h2>
-  <p>Ask anything below – or email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
+  <h2 id="contact">Questions, feedback or ideas?</h2>
+  <p><b>Team members:</b> if you have a question, feedback or a suggestion – about one of the current tools, or an idea for a new automation – please send it here. Every message is read.</p>
+  <p>Not on the team? You're welcome to get in touch too, or email <a href="mailto:nadav.automations@gmail.com">nadav.automations@gmail.com</a>.</p>
   <form class="qform" id="qform" novalidate>
     <div class="field">
       <label for="qName">Name</label>
@@ -59,11 +66,11 @@
       <small>So I can reply. It's never shared.</small>
     </div>
     <div class="field">
-      <label for="qText">Your question</label>
+      <label for="qText">Your message</label>
       <textarea id="qText" name="question" rows="5" required></textarea>
     </div>
     <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
-    <div class="qbar"><button type="submit" class="btn" id="qSend">Send question</button><span id="qMsg" class="qmsg" role="status"></span></div>
+    <div class="qbar"><button type="submit" class="btn" id="qSend">Send message</button><span id="qMsg" class="qmsg" role="status"></span></div>
   </form>
   <p class="muted">Your answers are only seen by the site's owner – see the <a href="privacy.html#questions">privacy policy</a>.</p>
 </main>
@@ -77,7 +84,7 @@
     <a class="right" href="admin/">Admin</a>
   </div>
 </footer>
-<script src="site.js?v=2"></script>
+<script src="site.js?v=3"></script>
 <script src="analytics.js?v=7"></script>
 </body>
 </html>

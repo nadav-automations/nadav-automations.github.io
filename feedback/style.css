@@ -1,3 +1,5 @@
+/* Anything marked hidden stays hidden, even where a rule below sets display */
+[hidden] { display: none !important; }
 :root { --fg:#1f2430; --muted:#6b7080; --line:#dde0ea; --accent:#535FC1; --accent-dark:#3f4aa6; --lilac:#EEEFFB; --bg:#f6f7fb; --card:#fff; --red:#b42318; }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
