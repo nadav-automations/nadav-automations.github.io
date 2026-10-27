@@ -88,11 +88,12 @@
     const emailCol = Q.headers.findIndex(h => /e-?mail/i.test(h));
     app.innerHTML = `<h1>Questions</h1>
       <div class="tools filters"><input type="search" id="qq" placeholder="Search questions…" value="${esc(QF.q)}"><button class="light" id="refresh">Refresh</button></div>
+      ${!Q.rows.length ? '<div class="card"><p style="margin:0;">No questions yet. When someone uses the form on your homepage, it appears here.</p></div>' : ''}
       ${rows.map(r => `<div class="card qa">
         <div class="muted">${esc(r[0])}</div>
         <dl>${Q.headers.slice(1).map((h, i) => r[i + 1] ? `<dt>${esc(h)}</dt><dd>${i + 1 === emailCol ? `<a href="mailto:${esc(r[i + 1])}">${esc(r[i + 1])}</a>` : esc(r[i + 1])}</dd>` : '').join('')}</dl>
         ${emailCol > 0 && r[emailCol] ? `<a class="btn small" href="mailto:${esc(r[emailCol])}?subject=${encodeURIComponent('Re: your question')}">Reply by email</a>` : ''}
-      </div>`).join('') || '<p class="muted">No questions match.</p>'}
+      </div>`).join('') || (Q.rows.length ? '<p class="muted">No questions match.</p>' : '')}
       <p class="muted">${rows.length} question${rows.length === 1 ? '' : 's'}.</p>`;
     $('#qq').oninput = e => { QF.q = e.target.value; const pos = e.target.selectionStart; drawQuestions(); const el = $('#qq'); el.focus(); el.setSelectionRange(pos, pos); };
     $('#refresh').onclick = loadQuestions;
@@ -138,6 +139,15 @@
     $('#q').oninput = e => { F.q = e.target.value; const pos = e.target.selectionStart; draw(); const el = $('#q'); el.focus(); el.setSelectionRange(pos, pos); };
     $('#refresh').onclick = load;
   }
+
+  // Home button: asks first, so you don't leave the admin area by accident
+  $('#homeBtn').onclick = () => {
+    const d = $('#leave');
+    if (!d || !d.showModal) { if (confirm('This takes you back to the homepage. Continue?')) location.href = '../'; return; }
+    d.returnValue = '';
+    d.onclose = () => { if (d.returnValue === 'go') location.href = '../'; };
+    d.showModal();
+  };
 
   $('#forget').onclick = async e => {
     e.preventDefault();

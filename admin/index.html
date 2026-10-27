@@ -7,27 +7,26 @@
 <meta name="referrer" content="no-referrer">
 <title>Admin – activity</title>
 <link rel="stylesheet" href="../feedback/style.css?v=13">
-<link rel="stylesheet" href="admin.css?v=4">
+<link rel="stylesheet" href="admin.css?v=5">
 </head>
 <body>
 <header class="top">
   <div class="wrap bar">
-    <a class="brand" href="../">Nadav Automations <span class="adminpill">Admin</span></a>
-    <nav><a href="./" id="tabAct" class="on">Activity</a><a href="?p=questions" id="tabQ">Questions</a><a href="../feedback/">Feedback app</a><a href="../">Home</a></nav>
-    <div class="side"><a href="#" class="chipbtn" id="forget" hidden>Sign out</a></div>
+    <a class="brand" href="./">Nadav Automations <span class="adminpill">Admin</span></a>
+    <nav><a href="./" id="tabAct" class="on">Activity</a><a href="?p=questions" id="tabQ">Questions</a></nav>
+    <div class="side"><button type="button" class="iconbtn" id="homeBtn" title="Back to the homepage" aria-label="Back to the homepage"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></svg></button><a href="#" class="chipbtn" id="forget" hidden>Sign out</a></div>
   </div>
 </header>
 <main class="wrap" id="app"><p class="loading">Loading…</p></main>
-<footer class="sitefoot">
-  <div class="wrap">
-    <span>© Nadav Automations</span>
-    <a href="../">Home</a>
-    <a href="../privacy.html">Privacy policy</a>
-    <a href="../#contact">Contact</a>
-    <a class="right" href="../admin/">Admin</a>
-  </div>
-</footer>
+<footer class="sitefoot"><div class="wrap"><span>© Nadav Automations · Admin area</span></div></footer>
+<dialog id="leave" class="leave">
+  <form method="dialog">
+    <h2>Leave the admin area?</h2>
+    <p>This takes you back to the Nadav Automations homepage. You'll stay signed in, so you can come straight back.</p>
+    <div class="leavebar"><button value="stay" class="light">Stay here</button><button value="go" id="leaveGo">Go to homepage</button></div>
+  </form>
+</dialog>
 <script src="config.js?v=1"></script>
-<script src="admin.js?v=5"></script>
+<script src="admin.js?v=6"></script>
 </body>
 </html>

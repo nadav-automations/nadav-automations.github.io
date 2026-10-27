@@ -25,3 +25,14 @@ body.admin-in nav a.on, body.admin-in nav a:hover { background: rgba(242,184,75,
 body.admin-in h1 { display: flex; align-items: center; gap: 10px; }
 body.admin-in .stat { border-left: 4px solid #f2b84b; }
 body.admin-in table.log th { background: #e6e8ef; }
+
+/* Home button + "leave the admin area?" box */
+.iconbtn { display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0; border-radius: 50%; background: transparent; border: 1px solid rgba(255,255,255,.45); color: #fff !important; cursor: pointer; margin-right: 8px; }
+.iconbtn:hover { background: rgba(255,255,255,.15); }
+.iconbtn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.leave { border: 0; border-radius: 14px; padding: 0; max-width: 420px; width: calc(100% - 32px); box-shadow: 0 20px 50px rgba(20,24,60,.25); }
+.leave::backdrop { background: rgba(20,24,40,.45); }
+.leave form { padding: 22px 24px; }
+.leave h2 { margin: 0 0 8px; font-size: 1.15rem; color: var(--fg); }
+.leave p { color: var(--muted); }
+.leavebar { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
