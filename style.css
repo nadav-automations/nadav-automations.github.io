@@ -81,3 +81,10 @@ footer .right { margin-left: auto; }
 .qmsg.ok { color: #1e7b34; font-weight: bold; }
 .qmsg.bad { color: #b42318; }
 .qform + .muted { margin-top: 10px; }
+
+/* Warning bubble when a box is too long */
+.field { position: relative; }
+.tip { position: absolute; left: 0; top: 100%; margin-top: 6px; background: #b42318; color: #fff; font-size: .82rem; padding: 6px 10px; border-radius: 7px; box-shadow: 0 4px 14px rgba(0,0,0,.15); z-index: 2; max-width: 100%; }
+.tip::before { content: ""; position: absolute; top: -5px; left: 16px; border: 5px solid transparent; border-top: 0; border-bottom-color: #b42318; }
+.tip[hidden] { display: none; }
+.tip:not([hidden]) ~ .err { display: none; }

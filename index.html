@@ -7,7 +7,7 @@
 <meta name="description" content="Small automations and tools that save time on everyday work.">
 <title>Nadav Automations</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23535FC1%22/%3E%3Cpath d=%22M10 22V10l12 12V10%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <header class="top">
@@ -51,7 +51,7 @@
   <form class="qform" id="qform" novalidate>
     <div class="field">
       <label for="qName">Name</label>
-      <input id="qName" name="name" type="text" maxlength="80" autocomplete="name" required>
+      <input id="qName" name="name" type="text" autocomplete="name" required>
     </div>
     <div class="field">
       <label for="qEmail">Email</label>
@@ -60,8 +60,7 @@
     </div>
     <div class="field">
       <label for="qText">Your question</label>
-      <textarea id="qText" name="question" rows="5" maxlength="2000" required></textarea>
-      <small class="count" id="qCount">0 / 2000</small>
+      <textarea id="qText" name="question" rows="5" required></textarea>
     </div>
     <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
     <div class="qbar"><button type="submit" class="btn" id="qSend">Send question</button><span id="qMsg" class="qmsg" role="status"></span></div>
@@ -77,6 +76,6 @@
     <a class="right" href="admin/">Admin</a>
   </div>
 </footer>
-<script src="site.js?v=1"></script>
+<script src="site.js?v=2"></script>
 </body>
 </html>

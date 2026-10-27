@@ -9,7 +9,21 @@
   if (!f) return;
   const $ = id => document.getElementById(id);
   const msg = (text, cls) => { $('qMsg').textContent = text; $('qMsg').className = 'qmsg ' + (cls || ''); };
-  $('qText').addEventListener('input', () => { $('qCount').textContent = `${$('qText').value.length} / 2000`; });
+  // A small warning pops up under a box as soon as it's too long (nothing is cut off)
+  const LIMITS = { qName: [80, 'Names can be up to 80 characters.'], qText: [2000, 'Please keep your question under 2000 characters – you can email more details.'] };
+  Object.keys(LIMITS).forEach(id => {
+    const el = $(id), [max, text] = LIMITS[id], field = el.closest('.field');
+    const tip = document.createElement('div');
+    tip.className = 'tip'; tip.setAttribute('role', 'alert'); tip.hidden = true;
+    tip.textContent = `${text} (${max} max)`;
+    field.appendChild(tip);
+    el.addEventListener('input', () => {
+      const over = el.value.length > max;
+      tip.hidden = !over;
+      if (over) tip.textContent = `${text} You're at ${el.value.length}.`;
+      field.classList.toggle('bad', over);
+    });
+  });
 
   function check() {
     const rules = [
@@ -44,7 +58,7 @@
     try {
       // Google Forms doesn't send a readable reply to other websites, so a sent request counts as success
       await fetch(FORM + '/formResponse', { method: 'POST', mode: 'no-cors', body });
-      f.reset(); $('qCount').textContent = '0 / 2000';
+      f.reset();
       msg('Thanks – your question has been sent. You\'ll get a reply by email.', 'ok');
     } catch (err) {
       msg('Sorry, that didn\'t send. Please check your connection, or email instead.', 'bad');
