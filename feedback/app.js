@@ -42,13 +42,21 @@
   }
   function forget() { KEY = ''; BOOT = null; store.del('fbKey'); store.del('fbBoot'); paintTop(); }
 
+  // Rough device description for the owner's activity log, e.g. "Computer (Chrome)"
+  const DEVICE = (() => {
+    const u = navigator.userAgent;
+    const kind = /iPad|Tablet/i.test(u) ? 'Tablet' : /Mobi|iPhone|Android/i.test(u) ? 'Phone' : 'Computer';
+    const b = /Edg\//.test(u) ? 'Edge' : /OPR\//.test(u) ? 'Opera' : /Firefox\//.test(u) ? 'Firefox' : /Chrome\//.test(u) ? 'Chrome' : /Safari\//.test(u) ? 'Safari' : 'other browser';
+    return `${kind} (${b})${POPOUT ? ' pop-out' : ''}`;
+  })();
+
   // ---- Talking to the engine (POST with a plain-text body, so no extra browser checks are needed)
   async function call(a, params) {
     if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(API)) throw new Error('The app isn\'t set up yet – the engine address is missing from config.js.');
     let res, j;
     try {
       res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(Object.assign({ a, k: KEY }, params || {})) });
+        body: JSON.stringify(Object.assign({ a, k: KEY, dv: DEVICE }, params || {})) });
     } catch (e) { throw new Error('Couldn\'t reach the app\'s engine. Check your internet connection and try again.'); }
     try { j = await res.json(); } catch (e) { throw new Error('The engine sent back something unexpected. Please try again in a minute.'); }
     if (!j.ok) {
@@ -56,7 +64,30 @@
       if (/no longer works/.test(j.error || '')) { forget(); err.badKey = true; }
       throw err;
     }
+    track(a, params || {}, j);
     return j;
+  }
+
+  // ---- Activity: sent straight from the browser to the hub in the background (never slows the app).
+  //      The engine's signed pass (BOOT.log) proves who it is; opening the app and viewing an entry
+  //      are only sent once every 30 minutes.
+  const WHAT = { boot: 'Opened the app', view: 'Viewed an entry', create: 'Added an entry', save: 'Changed an entry',
+    shot: 'Added a screenshot', delete: 'Deleted an entry', linkAddViewer: 'Made a view-only link',
+    linkEmail: 'Emailed a personal link', linkReset: 'Renewed a personal link', linkRemove: 'Removed a view-only link' };
+  function track(a, params, res) {
+    const pass = BOOT && BOOT.log;
+    if (!pass || !WHAT[a] || pass.exp < Date.now()) return;
+    const entry = a === 'create' ? res && res.id : params.id;
+    if (a === 'boot' || a === 'view') {
+      const k = `fbAct:${a}:${entry || ''}`, last = Number(store.get(k) || 0);
+      if (Date.now() - last < 30 * 60e3) return;
+      store.set(k, String(Date.now()));
+    }
+    try {
+      fetch(pass.url, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ a: 'log', tool: pass.tool, who: pass.who, exp: pass.exp, sig: pass.sig,
+          rows: [{ when: new Date().toISOString(), what: WHAT[a], entry: entry ? pad(entry) : '', device: DEVICE }] }) }).catch(() => {});
+    } catch (e) {}
   }
 
   // ---- Data: shown straight away from this browser's copy, then refreshed
@@ -64,6 +95,7 @@
   try { BOOT = JSON.parse(store.get('fbBoot') || 'null'); } catch (e) { BOOT = null; }
   async function load() {
     BOOT = await call('boot');
+    track('boot', {}, null);
     FRESH = true;
     store.set('fbBoot', JSON.stringify(BOOT));
     paintTop();
@@ -464,6 +496,7 @@
     if (!e) throw new Error('That entry no longer exists.');
     document.title = `${pad(e.id)} – ${e.headline}`;
     const owner = me().role === 'owner';
+    track('view', { id }, null);
     if (!paint(`<p class="muted">${link('list', 0, '← All entries')}</p>
       <h1>${pad(e.id)} · ${esc(e.headline || 'No headline')}</h1>
       ${e.updated ? `<div class="msg">Changed on ${esc(e.updated)}, after it had been sent to the developer.</div>` : ''}
