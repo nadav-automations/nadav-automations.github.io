@@ -202,3 +202,15 @@ body.compact .sitefoot { display: none; }
 .dropdown a[hidden] { display: none; }
 body.compact .popbtn { display: none; }
 @media (max-width: 700px) { .popbtn { display: none; } }
+
+/* ---- Developer area (09/11/2026): responses, the response forms and status badges ---- */
+.badge.dev { color: var(--fg); font-weight: bold; }
+.badge.devshot { background: #FCE5CD; color: #7a4a12; font-weight: bold; }
+.resps { display: grid; gap: 10px; margin-bottom: 14px; }
+.resp { background: #fff; border: 1px solid var(--line); border-left: 4px solid #E9A92F; border-radius: 8px; padding: 12px 14px; }
+.resp.ours { border-left-color: var(--accent); }
+.rhead { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.rnote { white-space: pre-wrap; margin-top: 8px; }
+.rnote .lbl { display: block; font-size: .75rem; font-weight: bold; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.hint { background: var(--lilac); border-radius: 8px; padding: 8px 12px; font-size: .9rem; margin: 10px 0 0; }
+textarea.short { min-height: 70px; }

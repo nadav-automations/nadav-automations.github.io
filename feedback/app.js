@@ -73,6 +73,8 @@
   //      are only sent once every 30 minutes.
   const WHAT = { boot: 'Opened the app', view: 'Viewed an entry', create: 'Added an entry', save: 'Changed an entry',
     shot: 'Added a screenshot', delete: 'Deleted an entry', linkAddViewer: 'Made a view-only link',
+    respond: 'Responded to an entry', rshot: 'Added a developer screenshot', teamAct: 'Answered the developers',
+    linkAddDeveloper: 'Made a developer link',
     linkEmail: 'Emailed a personal link', linkReset: 'Renewed a personal link', linkRemove: 'Removed a view-only link' };
   function track(a, params, res) {
     const pass = BOOT && BOOT.log;
@@ -103,7 +105,9 @@
   }
   const entry = id => BOOT.entries.find(e => e.id === id);
   const me = () => BOOT.me;
-  const canWrite = () => me().role !== 'viewer';
+  const isDev = () => me().role === 'developer';
+  const canWrite = () => me().role === 'owner' || me().role === 'member';   // only the Asiatic team adds and changes entries
+  const opt = k => (BOOT.options && BOOT.options[k]) || [];
   const canEdit = e => me().role === 'owner' || (me().role === 'member' && e.name === me().name);
   const colour = v => (BOOT && BOOT.colours[v]) || '#eceef3';
   const chip = v => v ? `<span class="chip" style="background:${esc(colour(v))}">${esc(v)}</span>` : '';
@@ -175,7 +179,7 @@
     if ($('#navAdmin')) $('#navAdmin').hidden = me().role !== 'owner' || POPOUT;
     const sheet = $('#navSheet');
     if (sheet) { sheet.hidden = !BOOT.sheetUrl; if (BOOT.sheetUrl) sheet.href = BOOT.sheetUrl; }
-    who.textContent = `${me().name}${me().role === 'viewer' ? ' (view only)' : ''}`;
+    who.textContent = `${me().name}${({ viewer: ' (view only)', developer: ' (developer)' })[me().role] || ''}`;
     $('#forget').onclick = e => {
       e.preventDefault();
       if (confirm('Forget your personal link on this browser? You\'ll need the link from your email to get back in.')) { forget(); go('list'); }
@@ -194,6 +198,11 @@
       if (!BOOT || (p === 'edit' && !FRESH)) { paint('<p class="loading">Loading…</p>'); await load(); }
       else if (!FRESH) load().then(() => { if (n === RENDER && !DIRTY && ['list', 'view'].includes(route().p)) render(); }).catch(err => { if (err.badKey) pageKey(paint, err.message); });
       paintTop();
+      // Developers and view-only links can't add or change entries: sheet links to those pages open the entry instead
+      if (!canWrite() && ['go', 'new', 'edit', 'shot'].includes(p)) {
+        history.replaceState(null, '', id ? `?p=view&id=${id}` : '?p=list');
+        return render();
+      }
       if (p === 'go') return pageLaunch(paint);
       if (p === 'new') return pageForm(paint, null);
       if (p === 'edit') return pageForm(paint, id);
@@ -242,12 +251,15 @@
   // ---- All entries
   const FILTER = { show: 'all', q: '' };
   function pageList(paint) {
-    const viewer = !canWrite();
+    const filters = isDev()
+      ? [['all', 'All'], ['todo', 'To do'], ['waiting', 'Waiting on Asiatic'], ['high', 'High priority']]
+      : [['all', 'All'], ['mine', 'Mine'], ['unsent', 'Not yet sent'], ['high', 'High priority'], ['waiting', 'Waiting on Asiatic']]
+          .filter(f => canWrite() || f[0] !== 'mine');
+    if (!filters.some(f => f[0] === FILTER.show)) FILTER.show = 'all';
     paint(`<h1>All entries</h1>
       <div class="tools">
         <div class="row filters">
-          ${[['all', 'All'], ['mine', 'Mine'], ['unsent', 'Not yet sent'], ['high', 'High priority']].filter(f => !(viewer && f[0] === 'mine'))
-            .map(([k, t]) => `<button class="${FILTER.show === k ? 'on' : ''}" data-f="${k}">${t}</button>`).join('')}
+          ${filters.map(([k, t]) => `<button class="${FILTER.show === k ? 'on' : ''}" data-f="${k}">${t}</button>`).join('')}
         </div>
         <input type="search" id="q" placeholder="Search headlines, descriptions, order numbers…" value="${esc(FILTER.q)}">
 
@@ -264,7 +276,9 @@
       (FILTER.show !== 'mine' || e.name === me().name) &&
       (FILTER.show !== 'unsent' || !e.fedBack) &&
       (FILTER.show !== 'high' || e.priority === 'High') &&
-      (!q || [pad(e.id), e.headline, e.description, e.type, e.name, (e.orders || []).join(' ')].join(' ').toLowerCase().includes(q))
+      (FILTER.show !== 'todo' || opt('withDevelopers').includes(e.dev || '')) &&
+      (FILTER.show !== 'waiting' || opt('waitingOnAsiatic').includes(e.dev || '')) &&
+      (!q || [pad(e.id), e.headline, e.description, e.type, e.name, e.dev, (e.orders || []).join(' ')].join(' ').toLowerCase().includes(q))
     ).sort((a, b) => b.id - a.id);
     const ICON_SHOT = '<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M3 6.5h3l1.5-2h5l1.5 2h3v9H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="10.8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
     $('#list').innerHTML = list.length ? `<div class="rows">${list.map(e => `
@@ -275,7 +289,7 @@
           <span class="rh">${esc(e.headline || 'No headline')}</span>
           <span class="rm"><span class="dot" style="background:${esc(colour(e.type))}"></span>${esc(e.type)} · ${esc(e.name)} · ${esc(e.date)}${e.orders && e.orders.length ? ` · Order ${orderLinks(e.orders)}` : ''}${e.shots ? ` · <span class="shotn" title="${e.shots} screenshot${e.shots === 1 ? '' : 's'}">${ICON_SHOT}${e.shots}</span>` : ''}</span>
         </span>
-        <span class="rstat">${e.updated ? '<span class="badge upd" title="Changed after it was sent">Updated</span>' : ''}${e.fedBack ? '<span class="badge sent">✓ Sent</span>' : ''}</span>
+        <span class="rstat">${e.dev ? `<span class="badge dev" style="background:${esc(colour(e.dev))}" title="Developer status${e.devOn ? ` – ${esc(e.devOn)}` : ''}">${esc(e.dev)}</span>` : ''}${e.updated ? '<span class="badge upd" title="Changed after it was sent">Updated</span>' : ''}${e.fedBack && !isDev() ? '<span class="badge sent">✓ Sent</span>' : ''}</span>
         <span class="racts">${canEdit(e) ? `<a href="?p=edit&id=${e.id}" data-go="edit" data-id="${e.id}" class="ibtn act-edit" title="Edit">✎</a><a href="?p=shot&id=${e.id}" data-go="shot" data-id="${e.id}" class="ibtn act-shot" title="Add a screenshot">＋</a>` : ''}</span>
       </div>`).join('')}</div>` : '<p class="muted">No entries match.</p>';
   }
@@ -408,7 +422,7 @@
     return {
       count: () => items.length,
       // Uploads one at a time; returns how many failed
-      async upload(entryId, status) {
+      async upload(entryId, status, rid) {
         let failed = 0, i = 0;
         for (const item of items.slice()) {
           i++;
@@ -418,7 +432,7 @@
             await item.ready;
             if (!item.data) throw new Error('unreadable');
             state.textContent = 'Uploading…';
-            await call('shot', { id: entryId, image: item.data, caption: item.caption, thumb: item.thumb || '' });
+            await call(rid ? 'rshot' : 'shot', Object.assign({ id: entryId, image: item.data, caption: item.caption, thumb: item.thumb || '' }, rid ? { rid } : {}));
             state.textContent = '✓ Added';
           } catch (err) { failed++; state.textContent = 'Didn\'t upload: ' + err.message; }
         }
@@ -494,7 +508,28 @@
     };
   }
 
-  // ---- One entry, with its screenshots
+  // ---- One entry: its details, the developers' responses (with the response form) and its screenshots
+  const NOTE_LABEL = { 'Input needed': 'What we need from you', 'Working as intended': 'Why', 'Saved for later': 'Why',
+                       'Reopened': 'Why it was reopened', 'Reply': 'Reply' };
+  const DEV_HINT = {
+    'Received': 'You\'ve seen it.',
+    'Planned': 'You\'ll do it, but not yet.',
+    'In progress': 'You\'re working on it.',
+    'Input needed': 'You need something from the Asiatic team – say what below. They\'re emailed straight away.',
+    'Ready to test': 'You think it\'s fixed or built. The Asiatic team will check it.',
+    'Working as intended': 'You suggest no change because the app does this on purpose – say why below.',
+    'Saved for later': 'A good idea, but not this round – say why below.'
+  };
+  const TEAM_HINT = {
+    'Input needed': 'The developers need something from us (see their note above). Write a reply and click <b>Reply</b> – it goes back to them.',
+    'Ready to test': 'The developers think this is fixed. Check it, then click <b>Done</b> – or <b>Reopen</b> with a note saying what\'s still wrong.',
+    'Working as intended': 'The developers suggest no change (see why above). <b>Agree</b> to close it, or <b>Reopen</b> with a note.',
+    'Saved for later': 'The developers suggest leaving this for later. <b>Agree</b>, or <b>Reopen</b> with a note.',
+    'Done': 'This is closed. Reopen it if the problem comes back.',
+    'Agreed': 'This is closed. Reopen it if you change your mind.'
+  };
+  const TEAM_BTN = { Reply: 'Reply', Done: '✓ Done – it works', Agreed: 'Agree', Reopened: 'Reopen' };
+
   async function pageView(paint, id, n) {
     const e = entry(id);
     if (!e) throw new Error('That entry no longer exists.');
@@ -512,7 +547,8 @@
           <dt>Frequency</dt><dd>${chip(e.frequency) || '–'}</dd>
           <dt>Raised by</dt><dd>${chip(e.name)} on ${esc(e.date)}</dd>
           <dt>Order</dt><dd>${e.orders && e.orders.length ? orderLinks(e.orders) : '–'}</dd>
-          <dt>Fed back?</dt><dd>${e.fedBack ? '✓ Sent to the developer' : 'Not yet sent'}</dd>
+          ${isDev() ? '' : `<dt>Fed back?</dt><dd>${e.fedBack ? '✓ Sent to the developer' : 'Not yet sent'}</dd>`}
+          <dt>Dev status</dt><dd id="devStat">${e.dev ? chip(e.dev) : '<span class="muted">No response yet</span>'}</dd>
         </dl>
         <h2>Description</h2>
         <div class="desc">${e.description ? esc(e.description) : '<span class="muted">No description.</span>'}</div>
@@ -521,6 +557,9 @@
           ${owner ? '<button type="button" class="danger" id="del" style="margin-left:auto;">Delete entry</button>' : ''}
         </div>
       </div>
+      <h2>Developer responses</h2>
+      <div id="resp"><p class="loading">Loading responses…</p></div>
+      <div id="act"></div>
       <h2>Screenshots</h2>
       <div id="shots">${e.shots ? '<p class="loading">Loading screenshots…</p>' : '<p class="muted">None yet.</p>'}</div>`)) return;
     if (owner) {
@@ -533,14 +572,28 @@
         catch (err) { toast(err.message, 6000); b.disabled = false; b.textContent = 'Delete entry'; }
       };
     }
-    if (!e.shots) return;
-    const detail = await call('entry', { id });
+    let detail;
+    try { detail = await call('entry', { id }); }
+    catch (err) { if (n === RENDER) $('#resp').innerHTML = `<div class="msg err">${esc(err.message)}</div>`; return; }
     if (n !== RENDER) return;
+    const status = detail.status || '';
+    $('#devStat').innerHTML = status ? chip(status) : '<span class="muted">No response yet</span>';
+    const responses = detail.responses || [];
+    $('#resp').innerHTML = responses.length ? `<div class="resps">${responses.map(r => `
+      <div class="resp${r.side === 'Asiatic' ? ' ours' : ''}">
+        <div class="rhead">${chip(r.status)} <b>${esc(r.who)}</b> <span class="muted">${r.side === 'Asiatic' ? 'Asiatic team' : 'Developer'} · ${esc(r.when)}</span></div>
+        ${r.notes ? `<div class="rnote"><span class="lbl">${esc(r.status === 'Input needed' && !isDev() ? 'What the developers need from us' : NOTE_LABEL[r.status] || 'Notes')}</span>${esc(r.notes)}</div>` : ''}
+        ${r.change ? `<div class="rnote"><span class="lbl">Change made</span>${esc(r.change)}</div>` : ''}
+        ${r.version ? `<div class="muted" style="margin-top:6px;">Version: ${esc(r.version)}</div>` : ''}
+        ${r.shots ? `<div class="muted" style="margin-top:6px;">📷 ${r.shots} screenshot${r.shots === 1 ? '' : 's'} – shown under Screenshots below</div>` : ''}
+      </div>`).join('')}</div>` : '<p class="muted">No responses yet.</p>';
+    if (isDev()) devForm(id, status);
+    else if (canWrite()) teamForm(id, status);
+    if (!detail.shots.length) { $('#shots').innerHTML = '<p class="muted">None yet.</p>'; return; }
     const box = $('#shots');
-    if (!detail.shots.length) { box.innerHTML = '<p class="muted">None yet.</p>'; return; }
     box.className = 'shots';
     box.innerHTML = detail.shots.map((s, i) => `<div class="shot card"><img alt="Screenshot ${i + 1}" id="img${i}">
-      <div class="cap">${s.caption ? `<b>${esc(s.caption)}</b><br>` : ''}<span class="muted">Added by ${esc(s.by)}${s.date ? ` on ${esc(s.date)}` : ''}</span></div></div>`).join('');
+      <div class="cap">${s.from === 'Developer' ? '<span class="badge devshot">From the developers</span> ' : ''}${s.caption ? `<b>${esc(s.caption)}</b><br>` : ''}<span class="muted">Added by ${esc(s.by)}${s.date ? ` on ${esc(s.date)}` : ''}</span></div></div>`).join('');
     for (let i = 0; i < detail.shots.length; i++) {
       try {
         const img = await call('img', { f: detail.shots[i].f });
@@ -548,6 +601,88 @@
         $('#img' + i).src = `data:${img.mime};base64,${img.data}`;
       } catch (err) { if (n !== RENDER) return; $('#img' + i).alt = 'Couldn\'t load this screenshot.'; }
     }
+  }
+
+  // Developers: "Your response" – a status, notes, the change made, the version and screenshots
+  function devForm(id, status) {
+    let pick = opt('devStatuses').includes(status) ? status : '';
+    $('#act').innerHTML = `<div class="card">
+        <h2 style="margin-top:0;">Your response</h2>
+        <label class="f">Status</label>
+        <div class="pick" id="rPick">${opt('devStatuses').map(x => `<button type="button" data-v="${esc(x)}" class="${pick === x ? 'on' : ''}" style="background:${esc(colour(x))}">${esc(x)}</button>`).join('')}</div>
+        <p class="hint" id="rHint" hidden></p>
+        <label class="f" for="rNotes" id="rNotesLbl">Notes – optional</label>
+        <textarea id="rNotes"></textarea>
+        <label class="f" for="rChange">Change made – optional</label>
+        <textarea id="rChange" class="short" placeholder="What you changed, in a few words"></textarea>
+        <label class="f" for="rVersion">Version it's in – optional</label>
+        <input type="text" id="rVersion" maxlength="40" placeholder="e.g. 1.4.2">
+        <label class="f">Screenshots – optional</label>
+        ${shotPicker()}
+        <div class="formbar"><span class="status" id="rStatus"></span><button type="button" id="rSave">Save response</button></div>
+      </div>`;
+    const shots = wireShots();
+    const showPick = () => {
+      $('#rHint').hidden = !pick; $('#rHint').textContent = DEV_HINT[pick] || '';
+      const need = opt('needsNote').includes(pick);
+      $('#rNotesLbl').textContent = `${NOTE_LABEL[pick] || 'Notes'} – ${need ? 'required' : 'optional'}`;
+    };
+    showPick();
+    $('#rPick').onclick = ev => {
+      const b = ev.target.closest('button'); if (!b) return;
+      pick = b.dataset.v; DIRTY = true;
+      $$('button', $('#rPick')).forEach(x => x.classList.toggle('on', x === b));
+      showPick(); $('#rStatus').textContent = '';
+    };
+    ['rNotes', 'rChange', 'rVersion'].forEach(k => $('#' + k).addEventListener('input', () => { DIRTY = true; }));
+    $('#rSave').onclick = async () => {
+      const st = $('#rStatus'), btn = $('#rSave');
+      const data = { status: pick, notes: $('#rNotes').value.trim(), change: $('#rChange').value.trim(), version: $('#rVersion').value.trim(), shots: shots.count() };
+      if (!pick) { st.innerHTML = '<span style="color:#b42318;">Please choose a status.</span>'; return; }
+      if (opt('needsNote').includes(pick) && !data.notes) { st.innerHTML = `<span style="color:#b42318;">Please fill in "${esc(NOTE_LABEL[pick] || 'Notes')}".</span>`; return; }
+      btn.disabled = true; st.textContent = 'Saving…';
+      try {
+        const r = await call('respond', { id, data });
+        const failed = await shots.upload(id, st, r.rid);
+        DIRTY = false;
+        await load().catch(() => {});
+        toast(failed ? `${r.message} But ${failed} screenshot${failed === 1 ? '' : 's'} didn't upload – save another response with just the screenshot.` : r.message, failed ? 8000 : 4000);
+        go('view', id, true);
+      } catch (err) { st.innerHTML = `<span style="color:#b42318;">${esc(err.message)}</span>`; btn.disabled = false; }
+    };
+  }
+
+  // The Asiatic team: Reply, Done, Agree or Reopen, depending on where the entry stands
+  function teamForm(id, status) {
+    const allowed = opt('teamAllowed');
+    const acts = Object.keys(allowed).filter(a => (allowed[a] || []).includes(status));
+    if (!acts.length) {
+      $('#act').innerHTML = `<p class="muted">${status ? 'With the developers – nothing for us to do yet.' : 'Waiting for the developers to respond.'}</p>`;
+      return;
+    }
+    const needs = opt('needsNote');
+    $('#act').innerHTML = `<div class="card">
+        <h2 style="margin-top:0;">Answer the developers</h2>
+        <p class="hint">${TEAM_HINT[status] || ''}</p>
+        <label class="f" for="tNote">${acts.includes('Reply') ? 'Your reply' : 'Note'} – ${acts.every(a => needs.includes(a)) ? 'required' : `required to ${acts.filter(a => needs.includes(a)).map(a => TEAM_BTN[a].toLowerCase()).join(' or ')}`}</label>
+        <textarea id="tNote"></textarea>
+        <div class="formbar"><span class="status" id="tStatus"></span>
+          ${acts.map(a => `<button type="button" data-act="${a}" class="${a === 'Reopened' ? 'light' : ''}">${TEAM_BTN[a]}</button>`).join('')}</div>
+      </div>`;
+    $('#tNote').addEventListener('input', () => { DIRTY = true; });
+    $$('#act button[data-act]').forEach(b => b.onclick = async () => {
+      const act = b.dataset.act, note = $('#tNote').value.trim(), st = $('#tStatus');
+      if (needs.includes(act) && !note) { st.innerHTML = `<span style="color:#b42318;">Please write a note to ${TEAM_BTN[act].toLowerCase()}.</span>`; return; }
+      $$('#act button[data-act]').forEach(x => { x.disabled = true; });
+      st.textContent = 'Saving…';
+      try {
+        const r = await call('teamAct', { id, act, note });
+        DIRTY = false;
+        await load().catch(() => {});
+        toast(r.message);
+        go('view', id, true);
+      } catch (err) { st.innerHTML = `<span style="color:#b42318;">${esc(err.message)}</span>`; $$('#act button[data-act]').forEach(x => { x.disabled = false; }); }
+    });
   }
 
   // ---- Personal links (owner)
@@ -565,10 +700,14 @@
           <button type="button" class="small light" data-act="copy">Copy</button>
           <button type="button" class="small light" data-act="linkEmail">Email link</button>
           <button type="button" class="small light" data-act="linkReset">Renew</button>
-          ${l.viewer ? '<button type="button" class="small danger" data-act="linkRemove">Remove</button>' : ''}
+          ${l.removable ? '<button type="button" class="small danger" data-act="linkRemove">Remove</button>' : ''}
         </div></td></tr>`).join('')}</table></div>
+      <div class="card"><h2 style="margin-top:0;">Add a developer</h2>
+        <p class="muted">Someone at the company building the app. They see every entry, description and screenshot, and answer each one with a status, notes and their own screenshots. They also get view access to the spreadsheet and screenshot folders (use the address of their Google account). They can't add or change entries.</p>
+        <div class="row"><input type="text" id="dName" placeholder="Name" style="flex:1;min-width:140px;"><input type="email" id="dEmail" placeholder="Email address" style="flex:2;min-width:200px;"><button type="button" id="dAdd">Add</button></div>
+        <p id="dMsg" class="muted" style="margin-top:8px;"></p></div>
       <div class="card"><h2 style="margin-top:0;">Add someone who can only read the feedback</h2>
-        <p class="muted">For example the developer. They can see every entry, description and screenshot, but can't change anything.</p>
+        <p class="muted">For example someone who just follows progress. They can see every entry, description and screenshot, but can't change or answer anything.</p>
         <div class="row"><input type="text" id="vName" placeholder="Name" style="flex:1;min-width:140px;"><input type="email" id="vEmail" placeholder="Email address" style="flex:2;min-width:200px;"><button type="button" id="vAdd">Add</button></div>
         <p id="vMsg" class="muted" style="margin-top:8px;"></p></div>`)) return;
     $$('table.links button').forEach(b => b.onclick = async () => {
@@ -579,12 +718,17 @@
         return;
       }
       if (act === 'linkReset' && !confirm(`Make a new link for ${l.name}? Their current link will stop working.`)) return;
-      if (act === 'linkRemove' && !confirm(`Remove ${l.name}'s view-only link?`)) return;
+      if (act === 'linkRemove' && !confirm(`Remove ${l.name}'s ${l.kind === 'Developer' ? 'developer' : 'view-only'} link?${l.kind === 'Developer' ? ' They also lose access to the spreadsheet and screenshots.' : ''}`)) return;
       b.disabled = true;
       try { toast((await call(act, { token: t })).message, 6000); if (act !== 'linkEmail') render(); }
       catch (err) { toast(err.message, 6000); }
       b.disabled = false;
     });
+    $('#dAdd').onclick = async () => {
+      $('#dAdd').disabled = true; $('#dMsg').textContent = 'Adding and sharing…';
+      try { toast((await call('linkAddDeveloper', { name: $('#dName').value, email: $('#dEmail').value })).message, 8000); render(); }
+      catch (err) { $('#dMsg').textContent = err.message; $('#dAdd').disabled = false; }
+    };
     $('#vAdd').onclick = async () => {
       $('#vAdd').disabled = true;
       try { toast((await call('linkAddViewer', { name: $('#vName').value, email: $('#vEmail').value })).message, 6000); render(); }
