@@ -93,7 +93,7 @@
   }
 
   // ---- Data: shown straight away from this browser's copy, then refreshed
-  let BOOT = null, FRESH = false, HELP = null;
+  let BOOT = null, FRESH = false, HELP = null, VERSION = '';
   try { BOOT = JSON.parse(store.get('fbBoot') || 'null'); } catch (e) { BOOT = null; }
   async function load() {
     BOOT = await call('boot');
@@ -740,7 +740,7 @@
   async function pageHelp(paint) {
     paintTop();
     document.title = 'Help';
-    if (!HELP) { paint('<h1>Help</h1><p class="loading">Loading…</p>'); HELP = (await call('help')).help; }
+    if (!HELP) { paint('<h1>Help</h1><p class="loading">Loading…</p>'); const h = await call('help'); HELP = h.help; VERSION = h.version || ''; }
     let html = '<div class="help"><h1>How to use the feedback app</h1>', open = false;
     const close = () => { if (open) { html += '</ul>'; open = false; } };
     HELP.forEach(c => {
@@ -752,7 +752,7 @@
       else if (c[1]) html += `<p>${bold(c[1])}</p>`;
     });
     close();
-    paint(html + `</div><p style="margin-top:24px;">${link('list', 0, '← Back to the app')}</p>`);
+    paint(html + `</div><p style="margin-top:24px;">${link('list', 0, '← Back to the app')}</p>${VERSION ? `<p class="muted" style="margin-top:18px;font-size:.8rem;">Script version: ${esc(VERSION)}</p>` : ''}`);
   }
 
   render();
