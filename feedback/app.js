@@ -253,7 +253,7 @@
   function pageList(paint) {
     const filters = isDev()
       ? [['all', 'All'], ['todo', 'To do'], ['waiting', 'Waiting on Asiatic'], ['high', 'High priority']]
-      : [['all', 'All'], ['mine', 'Mine'], ['unsent', 'Not yet sent'], ['high', 'High priority'], ['waiting', 'Waiting on Asiatic']]
+      : [['all', 'All'], ['mine', 'Mine'], ['unsent', 'Not yet fed back'], ['high', 'High priority'], ['waiting', 'Waiting on Asiatic']]
           .filter(f => canWrite() || f[0] !== 'mine');
     if (!filters.some(f => f[0] === FILTER.show)) FILTER.show = 'all';
     paint(`<h1>All entries</h1>
@@ -289,7 +289,7 @@
           <span class="rh">${esc(e.headline || 'No headline')}</span>
           <span class="rm"><span class="dot" style="background:${esc(colour(e.type))}"></span>${esc(e.type)} · ${esc(e.name)} · ${esc(e.date)}${e.orders && e.orders.length ? ` · Order ${orderLinks(e.orders)}` : ''}${e.shots ? ` · <span class="shotn" title="${e.shots} screenshot${e.shots === 1 ? '' : 's'}">${ICON_SHOT}${e.shots}</span>` : ''}</span>
         </span>
-        <span class="rstat">${e.dev ? `<span class="badge dev" style="background:${esc(colour(e.dev))}" title="Developer status${e.devOn ? ` – ${esc(e.devOn)}` : ''}">${esc(e.dev)}</span>` : ''}${e.updated ? '<span class="badge upd" title="Changed after it was sent">Updated</span>' : ''}${e.fedBack && !isDev() ? '<span class="badge sent">✓ Sent</span>' : ''}</span>
+        <span class="rstat">${e.dev ? `<span class="badge dev" style="background:${esc(colour(e.dev))}" title="Developer status${e.devOn ? ` – ${esc(e.devOn)}` : ''}">${esc(e.dev)}</span>` : ''}${e.updated ? '<span class="badge upd" title="Changed after it was fed back">Updated</span>' : ''}${e.fedBack && !isDev() ? `<span class="badge sent" title="Fed back${e.fedOn ? ` on ${esc(e.fedOn)}` : ''}${e.fedHow ? ` – ${esc(e.fedHow.toLowerCase())}` : ''}">✓ Fed back</span>` : ''}</span>
         <span class="racts">${canEdit(e) ? `<a href="?p=edit&id=${e.id}" data-go="edit" data-id="${e.id}" class="ibtn act-edit" title="Edit">✎</a><a href="?p=shot&id=${e.id}" data-go="shot" data-id="${e.id}" class="ibtn act-shot" title="Add a screenshot">＋</a>` : ''}</span>
       </div>`).join('')}</div>` : '<p class="muted">No entries match.</p>';
   }
@@ -353,7 +353,7 @@
         <div class="formbar"><span class="status" id="status"></span>
           <button type="button" class="light" id="cancel">Cancel</button>
           <button type="button" id="save">${e ? 'Save changes' : 'Add entry'}</button></div>
-        ${e && e.fedBack ? '<p class="muted" style="margin-top:12px;">This entry has already been sent to the developer. Saving a change unticks Fed Back so it\'s sent again, marked UPDATED.</p>' : ''}
+        ${e && e.fedBack ? '<p class="muted" style="margin-top:12px;">This entry has already been fed back to the developers. Saving a change unticks Fed Back and marks it UPDATED, so they know to look again.</p>' : ''}
       </div>`);
     const shots = wireShots();
     if ($('#forgetChoice')) $('#forgetChoice').onclick = ev => { ev.preventDefault(); store.del('fbNewChoice'); ev.target.parentNode.textContent = 'Done – next time you\'ll be asked again.'; };
@@ -538,7 +538,7 @@
     track('view', { id }, null);
     if (!paint(`<p class="muted">${link('list', 0, '← All entries')}</p>
       <h1>${pad(e.id)} · ${esc(e.headline || 'No headline')}</h1>
-      ${e.updated ? `<div class="msg">Changed on ${esc(e.updated)}, after it had been sent to the developer.</div>` : ''}
+      ${e.updated ? `<div class="msg">Changed on ${esc(e.updated)}, after it had been fed back to the developers.</div>` : ''}
       <div class="card">
         <dl class="facts">
           <dt>Priority</dt><dd>${chip(e.priority) || '–'}</dd>
@@ -547,7 +547,7 @@
           <dt>Frequency</dt><dd>${chip(e.frequency) || '–'}</dd>
           <dt>Raised by</dt><dd>${chip(e.name)} on ${esc(e.date)}</dd>
           <dt>Order</dt><dd>${e.orders && e.orders.length ? orderLinks(e.orders) : '–'}</dd>
-          ${isDev() ? '' : `<dt>Fed back?</dt><dd>${e.fedBack ? '✓ Sent to the developer' : 'Not yet sent'}</dd>`}
+          ${isDev() ? '' : `<dt>Fed back?</dt><dd>${e.fedBack ? `✓ Fed back${e.fedOn ? ` on ${esc(e.fedOn)}` : ''}${e.fedHow ? ` <span class="muted">(${esc(e.fedHow.toLowerCase())})</span>` : ''}` : 'Not yet'}</dd>`}
           <dt>Dev status</dt><dd id="devStat">${e.dev ? chip(e.dev) : '<span class="muted">No response yet</span>'}</dd>
         </dl>
         <h2>Description</h2>
